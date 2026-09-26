@@ -152,7 +152,7 @@ src/
 - Logo (hoy el monograma "GB"), favicon e imagen OG.
 - URL de GitHub (el icono aparece solo al cargarla).
 - Deploy del formulario (lo hace el usuario, ver `worker/README.md`): cuentas de Resend y Cloudflare, secretos, `wrangler deploy`, y cargar `endpoint` y `turnstileSiteKey` en `content.js`.
-- Hosting: GitHub Pages (decidido). Falta el usuario de GitHub en `worker/wrangler.toml` (`ALLOWED_ORIGINS`) y, si se usa, el dominio propio.
+- Hosting: GitHub Pages en `https://gabynose.github.io` (repo `Gabynose/gabynose.github.io`, público). `.github/workflows/deploy.yml` compila y publica en cada push a `main` (el chequeo de logos puede frenar la publicación). `docs/` no se sube (está en `.gitignore`). Dominio propio: pendiente, opcional.
 - Decisiones de copy abiertas:
   - Tilde en "Contá **qué** tenés en mente".
   - "Agendá una llamada" promete agendar, pero falta un enlace de reserva o hay que cambiar el texto.

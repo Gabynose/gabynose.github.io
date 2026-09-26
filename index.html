@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050505" />
+    <meta name="color-scheme" content="dark" />
+    <title>Gabriel Boggia · Desarrollador de software</title>
+    <meta
+      name="description"
+      content="Portfolio de Gabriel Boggia. Diseño y desarrollo de páginas web con criterio, enfocadas a resolver problemas reales."
+    />
+    <link rel="canonical" href="https://gabynose.github.io/" />
+    <meta property="og:url" content="https://gabynose.github.io/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:title" content="Gabriel Boggia · Desarrollador de software" />
+    <meta
+      property="og:description"
+      content="Diseño y desarrollo de páginas web con criterio, enfocadas a resolver problemas reales."
+    />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/placeholders/favicon.svg" type="image/svg+xml" />
+    <!-- Fuentes del primer pantallazo: se piden en paralelo, antes que el CSS. -->
+    <link rel="preload" href="/fonts/schibsted-grotesk-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/schibsted-grotesk-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <div class="bg-grid" aria-hidden="true"></div>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <header>
+      <nav class="nav" aria-label="Principal" data-render="nav"></nav>
+    </header>
+
+    <main id="contenido" tabindex="-1">
+      <section class="section section--hero" id="inicio" tabindex="-1" aria-labelledby="inicio-titulo">
+        <div class="container" data-render="hero"></div>
+      </section>
+
+      <section class="section" id="problema" tabindex="-1" aria-labelledby="problema-titulo">
+        <div class="container" data-render="problema"></div>
+      </section>
+
+      <section class="section" id="proyectos" tabindex="-1" aria-labelledby="proyectos-titulo">
+        <div class="container" data-render="proyectos"></div>
+      </section>
+
+      <section class="section" id="contacto" tabindex="-1" aria-labelledby="contacto-titulo">
+        <div class="container" data-render="contacto"></div>
+      </section>
+    </main>
+  </body>
+</html>

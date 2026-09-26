@@ -1,0 +1,14 @@
+node_modules
+dist
+.impeccable/review
+
+# Worker de Cloudflare: estado local y secretos de prueba (el repo es público)
+worker/.wrangler
+.dev.vars
+*.dev.vars
+.env
+.env.*
+.impeccable/hook.cache.json
+
+# Brief y referencias privadas (quedan solo en la PC)
+docs/

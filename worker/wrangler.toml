@@ -1,0 +1,20 @@
+name = "portfolio-contacto"
+main = "contact.js"
+compatibility_date = "2026-09-01"
+
+[vars]
+# Dominios desde donde se acepta el formulario, separados por coma.
+# Si conectás un dominio propio, sumalo acá (ej. ",https://gabrielboggia.com").
+ALLOWED_ORIGINS = "https://gabynose.github.io,http://localhost:5173,http://localhost:4173"
+TO_EMAIL = "gabrielboggia@gmail.com"
+FROM_EMAIL = "Portfolio <onboarding@resend.dev>"
+
+# Límite de envíos por visitante: 3 por minuto.
+# Si el deploy da error con este bloque (plan sin Rate Limiting), borralo: el Worker funciona igual.
+[[ratelimits]]
+name = "RATE_LIMITER"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 3
+  period = 60

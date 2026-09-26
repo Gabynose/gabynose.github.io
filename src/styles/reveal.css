@@ -1,0 +1,66 @@
+/* Aparición al entrar en pantalla (motion/reveal.js). Solo se arma con JS y sin movimiento reducido. */
+.reveal-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* Margen para descendentes y signos (g, p, coma) dentro de la máscara. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.reveal-word__inner {
+  display: inline-block;
+}
+
+.is-armed .reveal-word__inner {
+  transform: translateY(110%);
+}
+
+.is-armed [data-reveal-item] {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.is-armed.is-revealed .reveal-word__inner,
+.is-armed.is-revealed [data-reveal-item] {
+  opacity: 1;
+  transform: none;
+  transition:
+    transform 1.3s var(--ease-out) var(--d, 0ms),
+    opacity 1.1s var(--ease-out) var(--d, 0ms);
+}
+
+/* Línea resaltada de un título: negro sobre blanco. El fondo entra con un barrido al aparecer. */
+.highlight {
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  padding: 0 0.18em 0.04em;
+  /* El fondo sobresale a la izquierda: el texto queda alineado con las otras líneas. */
+  margin-inline-start: -0.18em;
+  margin-top: 0.14em; /* aire entre el bloque blanco y los descendentes de la línea de arriba */
+  color: var(--c-bg);
+}
+
+.highlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--c-fg);
+  transform-origin: left center;
+}
+
+.highlight ::selection {
+  background-color: var(--c-bg);
+  color: var(--c-fg);
+}
+
+.is-armed .highlight::before {
+  transform: scaleX(0);
+}
+
+.is-armed.is-revealed .highlight::before {
+  transform: none;
+  transition: transform 0.9s var(--ease-out) var(--d, 0ms);
+}

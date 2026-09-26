@@ -1,0 +1,73 @@
+/* Design tokens. Tema único: oscuro. */
+:root {
+  color-scheme: dark;
+
+  /* Color: monocromo total. El verde es el único color con vida. */
+  --c-bg: #050505;
+  --c-surface: #0d0d0d;
+  --c-box: #080808; /* fondo de la caja de logo de cada proyecto */
+  --c-fg: #f5f5f4;
+  --c-fg-2: rgb(245 245 244 / 0.66);
+  --c-fg-3: rgb(245 245 244 / 0.5);
+  --c-line: rgb(255 255 255 / 0.1);
+  --c-line-soft: rgb(255 255 255 / 0.055);
+  --c-available: #3ddc84;
+
+  /* Tipografía: solo 400 y 700. */
+  --font-display: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-ui: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --fw-regular: 400;
+  --fw-bold: 700;
+
+  --fs-display: clamp(4rem, 1.25rem + 9vw, 9rem);
+  --fs-section: clamp(2rem, 1.2rem + 2.6vw, 3.25rem); /* títulos de sección (~52px) */
+  --fs-lead: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  --fs-body: clamp(1rem, 0.96rem + 0.18vw, 1.125rem);
+  --fs-small: 0.875rem;
+  --fs-label: 0.8125rem;
+  --fs-nav: clamp(0.8125rem, 0.72rem + 0.25vw, 0.9375rem);
+
+  --lh-display: 0.9;
+  --lh-heading: 1.02;
+  --lh-body: 1.55;
+
+  --ls-display: -0.04em;
+  --ls-heading: -0.03em;
+  --ls-label: 0.01em;
+
+  --measure: 62ch;
+
+  /* Espacio: una sola escala. */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+
+  --gutter: clamp(1rem, 0.4rem + 3vw, 4rem);
+  --container: 1320px;
+  --section-y: clamp(7rem, 4rem + 12vw, 14rem);
+
+  /* Cuadrícula de fondo. */
+  --grid-cell: clamp(56px, 2.5rem + 3.5vw, 104px);
+
+  /* Radios. */
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-pill: 999px;
+
+  /* Movimiento: fluido, sin golpes. Curva de Ref 1 (dialedweb). */
+  --ease-out: cubic-bezier(0.19, 1, 0.22, 1);
+  --dur-2: 500ms;
+  --dur-3: 750ms;
+  --dur-4: 1200ms;
+
+  --nav-h: clamp(3.5rem, 8vh, 4.5rem);
+
+  --z-nav: 10;
+}

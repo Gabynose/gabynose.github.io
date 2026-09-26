@@ -1,0 +1,68 @@
+/* Sección "Tu problema" (Ref 3: furoweb). */
+.problema {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--s-6);
+  row-gap: clamp(2.5rem, 1rem + 5vw, 6rem);
+}
+
+.problema__title {
+  grid-column: 1 / -1;
+  font-size: var(--fs-section);
+  line-height: 1.05;
+  letter-spacing: var(--ls-heading);
+  text-wrap: balance;
+}
+
+/* Nube de cruces: el espacio entre la frase y los párrafos. */
+.problema__visual {
+  position: relative;
+  grid-column: 1 / span 6;
+  width: 100%;
+  max-width: 36rem;
+  aspect-ratio: 1.1;
+}
+
+.crosses__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.problema__text {
+  grid-column: 8 / span 5;
+  align-self: center;
+  display: grid;
+  gap: var(--s-6);
+}
+
+.problema__paragraph {
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--c-line);
+  max-width: 44ch;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--c-fg-2);
+}
+
+@media (max-width: 899px) {
+  .problema {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .problema__title,
+  .problema__visual,
+  .problema__text {
+    grid-column: 1;
+  }
+
+  .problema__visual {
+    justify-self: center;
+    max-width: 26rem;
+  }
+
+  .problema__paragraph {
+    max-width: none;
+  }
+}

@@ -1,0 +1,155 @@
+/* Presentación. */
+.section--hero {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding-block: calc(var(--nav-h) + var(--s-8)) var(--s-9);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 6rem);
+}
+
+.hero__name {
+  font-size: var(--fs-display);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+}
+
+/* Cada palabra en su línea, con máscara para la entrada. Margen extra para descendentes (g). */
+.hero__line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+
+.hero__word {
+  display: block;
+}
+
+.hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-4) var(--s-5);
+  margin-top: clamp(1.5rem, 1rem + 2vw, 3rem);
+}
+
+.hero__role {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1rem + 1.1vw, 2rem);
+  font-weight: var(--fw-regular);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--c-fg-2);
+}
+
+/* Estado "Disponible": el único color vivo del sitio. */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.375rem 0.875rem 0.375rem 0.75rem;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-pill);
+  background-color: rgb(5 5 5 / 0.7);
+  font-size: var(--fs-small);
+  line-height: 1.4;
+  color: var(--c-fg);
+  white-space: nowrap;
+}
+
+.status__dot {
+  position: relative;
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--c-available);
+}
+
+.status__dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-color: var(--c-available);
+  animation: status-pulse 2.4s var(--ease-out) infinite;
+}
+
+@keyframes status-pulse {
+  from {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status__dot::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* Cubo Rubik 3D. */
+.hero__visual {
+  position: relative;
+  justify-self: end;
+  width: 100%;
+  max-width: 36rem;
+  aspect-ratio: 1;
+}
+
+/* Luz tenue detrás del cubo: despega la silueta negra del fondo negro. */
+.hero__visual::before {
+  content: '';
+  position: absolute;
+  inset: 8%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 255 255 / 0.11), rgb(255 255 255 / 0.035) 55%, transparent);
+  pointer-events: none;
+}
+
+.cube {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.cube.is-ready {
+  opacity: 1;
+}
+
+.cube__canvas {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.cube.is-dragging .cube__canvas {
+  cursor: grabbing;
+}
+
+@media (max-width: 899px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero__visual {
+    justify-self: center;
+    max-width: 22rem;
+  }
+}

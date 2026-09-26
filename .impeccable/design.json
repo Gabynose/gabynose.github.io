@@ -1,0 +1,403 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-25T00:00:00Z",
+  "title": "Design System: Gabriel Boggia",
+  "extensions": {
+    "colorMeta": {
+      "night-black": {
+        "role": "neutral",
+        "displayName": "Night Black",
+        "canonical": "#050505",
+        "tonalRamp": [
+          "#050505",
+          "#0d0d0d",
+          "#1c1c1c",
+          "#3a3a3a",
+          "#6b6b6b",
+          "#a3a3a3",
+          "#d4d4d4",
+          "#f5f5f4"
+        ]
+      },
+      "deep-surface": {
+        "role": "neutral",
+        "displayName": "Deep Surface",
+        "canonical": "#0d0d0d",
+        "tonalRamp": [
+          "#050505",
+          "#0d0d0d",
+          "#1c1c1c",
+          "#3a3a3a",
+          "#6b6b6b",
+          "#a3a3a3",
+          "#d4d4d4",
+          "#f5f5f4"
+        ]
+      },
+      "box-black": {
+        "role": "neutral",
+        "displayName": "Box Black",
+        "canonical": "#080808",
+        "tonalRamp": [
+          "#050505",
+          "#080808",
+          "#0d0d0d",
+          "#1c1c1c",
+          "#3a3a3a",
+          "#6b6b6b",
+          "#a3a3a3",
+          "#f5f5f4"
+        ]
+      },
+      "bone-white": {
+        "role": "primary",
+        "displayName": "Bone White",
+        "canonical": "#f5f5f4",
+        "tonalRamp": [
+          "#1c1c1b",
+          "#3a3a39",
+          "#5c5c5a",
+          "#7f7f7d",
+          "#a3a3a1",
+          "#c7c7c5",
+          "#e6e6e4",
+          "#f5f5f4"
+        ]
+      },
+      "ink-secondary": {
+        "role": "neutral",
+        "displayName": "Ink Secondary",
+        "canonical": "rgb(245 245 244 / 0.66)",
+        "tonalRamp": [
+          "rgb(245 245 244 / 0.1)",
+          "rgb(245 245 244 / 0.22)",
+          "rgb(245 245 244 / 0.28)",
+          "rgb(245 245 244 / 0.4)",
+          "rgb(245 245 244 / 0.5)",
+          "rgb(245 245 244 / 0.66)",
+          "rgb(245 245 244 / 0.85)",
+          "rgb(245 245 244 / 1)"
+        ]
+      },
+      "ink-tertiary": {
+        "role": "neutral",
+        "displayName": "Ink Tertiary",
+        "canonical": "rgb(245 245 244 / 0.5)",
+        "tonalRamp": [
+          "rgb(245 245 244 / 0.1)",
+          "rgb(245 245 244 / 0.22)",
+          "rgb(245 245 244 / 0.28)",
+          "rgb(245 245 244 / 0.4)",
+          "rgb(245 245 244 / 0.5)",
+          "rgb(245 245 244 / 0.66)",
+          "rgb(245 245 244 / 0.85)",
+          "rgb(245 245 244 / 1)"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "rgb(255 255 255 / 0.1)",
+        "tonalRamp": [
+          "rgb(255 255 255 / 0.055)",
+          "rgb(255 255 255 / 0.075)",
+          "rgb(255 255 255 / 0.1)",
+          "rgb(255 255 255 / 0.22)",
+          "rgb(255 255 255 / 0.28)",
+          "rgb(255 255 255 / 0.4)",
+          "rgb(255 255 255 / 0.5)",
+          "rgb(255 255 255 / 0.7)"
+        ]
+      },
+      "grid-line": {
+        "role": "neutral",
+        "displayName": "Grid Line",
+        "canonical": "rgb(255 255 255 / 0.055)",
+        "tonalRamp": [
+          "rgb(255 255 255 / 0.024)",
+          "rgb(255 255 255 / 0.035)",
+          "rgb(255 255 255 / 0.05)",
+          "rgb(255 255 255 / 0.055)",
+          "rgb(255 255 255 / 0.06)",
+          "rgb(255 255 255 / 0.075)",
+          "rgb(255 255 255 / 0.08)",
+          "rgb(255 255 255 / 0.1)"
+        ]
+      },
+      "available-green": {
+        "role": "tertiary",
+        "displayName": "Available Green",
+        "canonical": "#3ddc84",
+        "tonalRamp": [
+          "oklch(25% 0.08 155)",
+          "oklch(35% 0.11 155)",
+          "oklch(48% 0.14 155)",
+          "oklch(60% 0.17 155)",
+          "oklch(70% 0.19 155)",
+          "oklch(79% 0.18 155)",
+          "oklch(87% 0.12 155)",
+          "oklch(95% 0.05 155)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The hero name only, one word per masked line."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles and the detail title; may carry a black-on-white highlight line."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Project names under their media."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Schibsted at 400 in secondary ink: detail intro and hero role line."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Inter paragraphs in secondary ink, 44-62ch."
+      },
+      "nav": {
+        "displayName": "Nav",
+        "purpose": "Nav links and pill-button labels."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Chip text, form labels, captions; 700 for detail Problema/Solución labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "glass-inner-glow",
+        "value": "inset 0 0 4.5rem rgb(255 255 255 / 0.05)",
+        "purpose": "Nav pill; paired with backdrop-filter: blur(12px) over rgb(20 20 20 / 0.55)."
+      },
+      {
+        "name": "pill-inner-glow",
+        "value": "inset 0 0 1rem rgb(255 255 255 / 0.1)",
+        "purpose": "Outlined pill button."
+      },
+      {
+        "name": "cube-halo",
+        "value": "radial-gradient(closest-side, rgb(255 255 255 / 0.11), rgb(255 255 255 / 0.035) 55%, transparent)",
+        "purpose": "Soft light behind the black cube so its silhouette separates from the ground."
+      },
+      {
+        "name": "logo-light",
+        "value": "drop-shadow(0 0 0.2cqi rgb(var(--rim) / 0.85)) drop-shadow(0 0 1.4cqi rgb(var(--glow) / 0.5)) drop-shadow(0 0 5cqi rgb(var(--glow) / 0.28))",
+        "purpose": "Brand light emitted by a project logo, following its real silhouette. Intensifies on Interaction A."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+        "purpose": "The single curve for transitions, entrances, and reveals."
+      },
+      {
+        "name": "dur-2",
+        "value": "500ms",
+        "purpose": "State changes: color, border, icon rotation."
+      },
+      {
+        "name": "dur-3",
+        "value": "750ms",
+        "purpose": "Rolling pill labels, larger moves."
+      },
+      {
+        "name": "dur-4",
+        "value": "1200ms",
+        "purpose": "Light fade-in when a logo box is measured; long reveals."
+      },
+      {
+        "name": "word-reveal",
+        "value": "translateY(110%) to none, 1.3s ease-out, 110ms per line + 25ms per word",
+        "purpose": "Masked word-by-word heading reveals on scroll."
+      },
+      {
+        "name": "item-reveal",
+        "value": "opacity 0 + translateY(18px) to none, 1.1-1.3s ease-out",
+        "purpose": "Non-heading items revealed on scroll."
+      },
+      {
+        "name": "grid-drift",
+        "value": "one cell per 9s, linear, infinite, shared document clock",
+        "purpose": "Diagonal drift of the background grid; static under reduced motion."
+      },
+      {
+        "name": "status-pulse",
+        "value": "2.4s ease-out infinite, scale 1 to 3, opacity 0.55 to 0",
+        "purpose": "Availability dot ring; removed under reduced motion."
+      },
+      {
+        "name": "glow-breathe",
+        "value": "3.2s ease-in-out infinite alternate, halo opacity 0.12 to 0.8 + scale 1 to 1.09; haze scale 0.94 to 1.07; per-box negative delay",
+        "purpose": "Constant, subtle breathing of every project logo box; fixed at mid intensity under reduced motion."
+      },
+      {
+        "name": "orbit-comet",
+        "value": "3.4s linear infinite, dashed ellipse head (4/96) + tail (22/78) sharing one offset",
+        "purpose": "Interaction A on 'orbita' boxes; hidden under reduced motion."
+      },
+      {
+        "name": "live-sparks",
+        "value": "canvas, 26 sparks/s, max 40, life 1.1-2.4s, buoyancy upward, loop ends when all die",
+        "purpose": "Interaction A on 'fuego' boxes; off under reduced motion and while scrolled out of view."
+      },
+      {
+        "name": "box-flight",
+        "value": "FLIP of the real detail header, 950ms ease-out, lit from the click, breathing/comet phases copied from the card",
+        "purpose": "Card to detail transition; the box never goes still."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "projects-stack",
+        "value": "700px"
+      },
+      {
+        "name": "nav-collapse",
+        "value": "720px"
+      },
+      {
+        "name": "contact-stack",
+        "value": "800px"
+      },
+      {
+        "name": "hero-stack",
+        "value": "900px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Outlined Pill Button",
+      "kind": "button",
+      "refersTo": "button-pill",
+      "description": "Nav CTA: rolling label plus white arrow circle that spins on hover.",
+      "html": "<a class=\"ds-btn-pill\" href=\"#\"><span class=\"ds-btn-pill__text\"><span>Contacto</span><span aria-hidden=\"true\">Contacto</span></span><span class=\"ds-btn-pill__circle\"><svg class=\"ds-btn-pill__icon\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M3 13 13 3M5 3h8v8\"/></svg></span></a>",
+      "css": ".ds-btn-pill { display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.375rem 0.375rem 0.375rem 1rem; border: 1px solid rgb(255 255 255 / 0.1); border-radius: 999px; background-color: rgb(255 255 255 / 0.024); box-shadow: inset 0 0 1rem rgb(255 255 255 / 0.1); color: #f5f5f4; font-family: 'Inter', system-ui, sans-serif; font-size: 0.9375rem; line-height: 1.4; text-decoration: none; transition: border-color 500ms cubic-bezier(0.19, 1, 0.22, 1); } .ds-btn-pill:hover { border-color: rgb(255 255 255 / 0.22); } .ds-btn-pill:focus-visible { outline: 2px solid #f5f5f4; outline-offset: 3px; } .ds-btn-pill__text { position: relative; display: block; overflow: hidden; } .ds-btn-pill__text > span { display: flex; white-space: nowrap; transition: transform 750ms cubic-bezier(0.19, 1, 0.22, 1); } .ds-btn-pill__text > span + span { position: absolute; top: 100%; left: 0; } .ds-btn-pill:hover .ds-btn-pill__text > span, .ds-btn-pill:focus-visible .ds-btn-pill__text > span { transform: translateY(-100%); } .ds-btn-pill__circle { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: #f5f5f4; color: #050505; } .ds-btn-pill__icon { width: 0.875rem; height: 0.875rem; transition: rotate 500ms cubic-bezier(0.19, 1, 0.22, 1); } .ds-btn-pill:hover .ds-btn-pill__icon, .ds-btn-pill:focus-visible .ds-btn-pill__icon { rotate: 1turn; }"
+    },
+    {
+      "name": "Solid Button",
+      "kind": "button",
+      "refersTo": "button-solid",
+      "description": "Form submit: the negative of the pill, bone-white fill with a black arrow well.",
+      "html": "<button class=\"ds-btn-solid\" type=\"button\"><span>Enviar mensaje</span><span class=\"ds-btn-solid__circle\"><svg class=\"ds-btn-solid__icon\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M3 13 13 3M5 3h8v8\"/></svg></span></button>",
+      "css": ".ds-btn-solid { display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%; min-height: 3.5rem; padding: 0.375rem 0.375rem 0.375rem 1.5rem; border: 0; border-radius: 999px; background-color: #f5f5f4; color: #050505; font-family: 'Inter', system-ui, sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background-color 500ms cubic-bezier(0.19, 1, 0.22, 1); } .ds-btn-solid:hover { background-color: #ffffff; } .ds-btn-solid:focus-visible { outline: 2px solid #f5f5f4; outline-offset: 3px; } .ds-btn-solid__circle { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 50%; background: #050505; color: #f5f5f4; } .ds-btn-solid__icon { width: 1rem; height: 1rem; transition: rotate 500ms cubic-bezier(0.19, 1, 0.22, 1); } .ds-btn-solid:hover .ds-btn-solid__icon, .ds-btn-solid:focus-visible .ds-btn-solid__icon { rotate: 45deg; }"
+    },
+    {
+      "name": "Glass Nav Pill",
+      "kind": "nav",
+      "refersTo": "nav-pill",
+      "description": "Floating dark-glass pill: monogram, centered links with draw-in underline, CTA.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav__logo\" href=\"#\">GB</a><ul class=\"ds-nav__links\"><li><a class=\"ds-nav__link\" href=\"#\" aria-current=\"true\"><span>Inicio</span></a></li><li><a class=\"ds-nav__link\" href=\"#\"><span>Tu problema</span></a></li><li><a class=\"ds-nav__link\" href=\"#\"><span>Proyectos</span></a></li></ul><a class=\"ds-nav__cta\" href=\"#\">Contacto</a></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: 4.5rem; padding: 0 0.5rem 0 1rem; border: 1px solid rgb(255 255 255 / 0.075); border-radius: 999px; background-color: rgb(20 20 20 / 0.55); box-shadow: inset 0 0 4.5rem rgb(255 255 255 / 0.05); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); font-family: 'Inter', system-ui, sans-serif; } .ds-nav__logo { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border: 1px solid rgb(255 255 255 / 0.1); border-radius: 50%; color: #f5f5f4; font-family: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 0.8125rem; font-weight: 700; letter-spacing: -0.02em; text-decoration: none; transition: border-color 500ms cubic-bezier(0.19, 1, 0.22, 1); } .ds-nav__logo:hover { border-color: rgb(255 255 255 / 0.4); } .ds-nav__links { display: flex; gap: 2rem; margin: 0; padding: 0; list-style: none; } .ds-nav__link { padding-block: 0.5rem; color: rgb(245 245 244 / 0.66); font-size: 0.9375rem; line-height: 1.4; text-decoration: none; transition: color 500ms cubic-bezier(0.19, 1, 0.22, 1); } .ds-nav__link span { position: relative; } .ds-nav__link span::after { content: ''; position: absolute; left: 0; right: 0; bottom: -0.2em; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right bottom; transition: transform 500ms ease-out; } .ds-nav__link:hover, .ds-nav__link:focus-visible, .ds-nav__link[aria-current] { color: #f5f5f4; } .ds-nav__link:hover span::after, .ds-nav__link:focus-visible span::after, .ds-nav__link[aria-current] span::after { transform: scaleX(1); transform-origin: left bottom; } .ds-nav__cta { padding: 0.5rem 1rem; border: 1px solid rgb(255 255 255 / 0.1); border-radius: 999px; color: #f5f5f4; font-size: 0.9375rem; text-decoration: none; }"
+    },
+    {
+      "name": "Availability Chip",
+      "kind": "chip",
+      "refersTo": "status-chip",
+      "description": "The only colored element: pulsing green dot plus 'Disponible' label.",
+      "html": "<span class=\"ds-status\"><span class=\"ds-status__dot\"></span>Disponible para trabajar</span>",
+      "css": ".ds-status { display: inline-flex; align-items: center; gap: 0.625rem; padding: 0.375rem 0.875rem 0.375rem 0.75rem; border: 1px solid rgb(255 255 255 / 0.1); border-radius: 999px; background-color: rgb(5 5 5 / 0.7); color: #f5f5f4; font-family: 'Inter', system-ui, sans-serif; font-size: 0.875rem; line-height: 1.4; white-space: nowrap; } .ds-status__dot { position: relative; flex: none; width: 8px; height: 8px; border-radius: 50%; background: #3ddc84; } .ds-status__dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #3ddc84; animation: ds-pulse 2.4s cubic-bezier(0.19, 1, 0.22, 1) infinite; } @keyframes ds-pulse { from { opacity: 0.55; transform: scale(1); } to { opacity: 0; transform: scale(3); } } @media (prefers-reduced-motion: reduce) { .ds-status__dot::after { animation: none; opacity: 0; } }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Borderless translucent field; focus brightens fill and adds a white border. Errors stay monochrome.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field__label\">Email</span><input class=\"ds-field__control\" type=\"email\" placeholder=\"tu@correo.com\"></label>",
+      "css": ".ds-field { display: grid; gap: 0.5rem; font-family: 'Inter', system-ui, sans-serif; } .ds-field__label { font-size: 0.875rem; color: rgb(245 245 244 / 0.66); } .ds-field__control { width: 100%; padding: 1rem; border: 1px solid transparent; border-radius: 12px; background-color: rgb(255 255 255 / 0.06); color: #f5f5f4; caret-color: #f5f5f4; font: inherit; font-size: 1rem; line-height: 1.4; transition: border-color 500ms cubic-bezier(0.19, 1, 0.22, 1), background-color 500ms cubic-bezier(0.19, 1, 0.22, 1); } .ds-field__control::placeholder { color: rgb(245 245 244 / 0.5); opacity: 1; } .ds-field__control:hover { background-color: rgb(255 255 255 / 0.08); } .ds-field__control:focus-visible { outline: none; border-color: rgb(255 255 255 / 0.5); background-color: rgb(255 255 255 / 0.08); }"
+    },
+    {
+      "name": "Contact Card",
+      "kind": "card",
+      "refersTo": "card-contact",
+      "description": "Near-black panel with hairline border and 24px corners; headline over a hairline-ruled paragraph.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card__title\">Hablemos</h3><p class=\"ds-card__text\">Contame qué necesitás y te respondo en el día.</p></div>",
+      "css": ".ds-card { padding: 2.5rem; border: 1px solid rgb(255 255 255 / 0.1); border-radius: 24px; background-color: rgb(13 13 13 / 0.85); color: #f5f5f4; } .ds-card__title { margin: 0; font-family: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 3.25rem; font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; } .ds-card__text { margin: 1.5rem 0 0; padding-top: 1.5rem; border-top: 1px solid rgb(255 255 255 / 0.1); font-family: 'Inter', system-ui, sans-serif; line-height: 1.55; color: rgb(245 245 244 / 0.66); }"
+    },
+    {
+      "name": "Project Tile",
+      "kind": "card",
+      "refersTo": "project-media",
+      "description": "4:3 logo box: transparent PNG logo lit by its own brand color on box black; hover (Interaction A) intensifies the light, tints the hairline with the brand glow, and raises the arrow cue.",
+      "html": "<a class=\"ds-project\" href=\"#\" style=\"--glow: 139 92 246; --rim: 191 165 250\"><span class=\"ds-project__media\"><span class=\"ds-project__halo\"></span><span class=\"ds-project__logo\" role=\"img\" aria-label=\"Logo\"></span></span><span class=\"ds-project__title\">Proyecto</span></a>",
+      "css": ".ds-project { display: block; color: #f5f5f4; text-decoration: none; } .ds-project__media { position: relative; display: grid; place-items: center; overflow: hidden; aspect-ratio: 4 / 3; border-radius: 16px; background: radial-gradient(ellipse 30% 45% at 50% 50%, rgb(var(--glow) / 0.2), transparent), #080808; container-type: size; } .ds-project__media::after { content: ''; position: absolute; inset: 0; border: 1px solid rgb(255 255 255 / 0.1); border-radius: inherit; transition: border-color 500ms cubic-bezier(0.19, 1, 0.22, 1); } .ds-project:hover .ds-project__media::after, .ds-project:focus-visible .ds-project__media::after { border-color: rgb(var(--glow) / 0.42); } .ds-project__logo { width: 30%; height: 44%; border-radius: 18%; background: rgb(var(--glow)); filter: drop-shadow(0 0 0.2cqi rgb(var(--rim) / 0.85)) drop-shadow(0 0 1.4cqi rgb(var(--glow) / 0.5)) drop-shadow(0 0 5cqi rgb(var(--glow) / 0.28)); transition: scale 1200ms cubic-bezier(0.19, 1, 0.22, 1); } .ds-project:hover .ds-project__logo { scale: 1.035; } .ds-project__halo { position: absolute; width: 30%; height: 44%; border-radius: 18%; background: rgb(var(--glow)); filter: blur(3cqi); animation: ds-breathe 3.2s ease-in-out infinite alternate; } @keyframes ds-breathe { from { opacity: 0.12; } to { opacity: 0.8; scale: 1.09; } } @media (prefers-reduced-motion: reduce) { .ds-project__halo { animation: none; opacity: 0.55; } } .ds-project:focus-visible { outline: 2px solid #f5f5f4; outline-offset: 6px; border-radius: 16px; } .ds-project__title { display: block; margin-top: 1.5rem; font-family: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 2rem; font-weight: 700; line-height: 1.1; letter-spacing: -0.015em; }"
+    },
+    {
+      "name": "Headline Highlight",
+      "kind": "custom",
+      "refersTo": "headline",
+      "description": "Emphasized headline line set black on a bone-white block that bleeds left to keep text aligned.",
+      "html": "<h2 class=\"ds-hl\">Tu negocio juega en primera.<br><span class=\"ds-hl__mark\">Tu web no.</span></h2>",
+      "css": ".ds-hl { margin: 0; color: #f5f5f4; font-family: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 3.25rem; font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; } .ds-hl__mark { position: relative; isolation: isolate; display: inline-block; padding: 0 0.18em 0.04em; margin-inline-start: -0.18em; margin-top: 0.14em; color: #050505; } .ds-hl__mark::before { content: ''; position: absolute; inset: 0; z-index: -1; background: #f5f5f4; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Night Workshop",
+    "overview": "A single dark room where the work is done in the open. The page is near-black, crossed by a fine white grid that never stops drifting, and everything on it is white type or white at lower opacity. The only object with volume is a glossy black Rubik cube that turns and solves itself; the only living color in the room's own voice is a small green dot that says the craftsman is available. The one sanctioned exception is the client work: each project sits in a black box lit from behind by its own brand color, so the client's identity stays intact while the room around it stays monochrome. Skill is demonstrated by the page's own finish (masked type reveals, a nav pill that drops and stretches, a lit logo box that flies from card to detail without ever going still), not claimed in copy.\n\nDensity is low and deliberate: one idea per viewport, huge grotesque headlines, generous section padding, thin hairlines instead of boxes. Surfaces are glass or near-black panels separated by one-pixel white lines at 10% opacity; depth comes from blur, inner glow, and the lit halo behind the cube, never from drop shadows. Motion is slow and liquid, all on one exponential ease-out curve, and fully yields to reduced motion.\n\nThe confirmed rejection is the generic corporate portfolio: identical card grids, agency phrasing, brand gradients, blues, particle backgrounds.",
+    "keyCharacteristics": [
+      "Total monochrome on #050505; grays are white at reduced opacity, not separate hues.",
+      "One green status dot is the site's own only color; project brand light lives strictly inside the project boxes.",
+      "Schibsted Grotesk for everything large, Inter for everything small; only weights 400 and 700.",
+      "Pill and circle geometry for interactive elements; 12/16/24px corners for fields, media, cards.",
+      "A constantly drifting thin-line grid as the ground plane.",
+      "One ease-out-expo curve for all motion; word-by-word masked reveals."
+    ],
+    "rules": [
+      {
+        "name": "The One Living Color Rule",
+        "body": "Green (#3ddc84) appears only as the availability dot. Errors, success, links, and hovers stay monochrome; form errors are marked with a brighter white border and white text.",
+        "section": "colors"
+      },
+      {
+        "name": "The Contained Brand Rule",
+        "body": "A project's brand color may appear only inside its own logo box (light, haze, orbit, fire, sparks) and on that box's one-pixel border when lit. It never leaks into type, buttons, the grid, or section backgrounds. The logo PNG itself is never recolored.",
+        "section": "colors"
+      },
+      {
+        "name": "The Opacity Gray Rule",
+        "body": "New grays are white (or bone white) at an alpha, never a mid-gray hex. Borders brighten on hover by raising alpha (0.1 to 0.22 to 0.28 to 0.4), not by changing hue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Weights Rule",
+        "body": "Only 400 and 700 exist; no font files for other weights are shipped. Headings are 700, leads and body are 400.",
+        "section": "typography"
+      },
+      {
+        "name": "The Big-Small Split Rule",
+        "body": "Schibsted for anything read as a headline, lead, or signature (including the email address and mobile menu links); Inter for anything read as UI or data.",
+        "section": "typography"
+      },
+      {
+        "name": "The Light-Not-Shadow Rule",
+        "body": "Lift is expressed as inner glow, blur, or a white halo. Never cast a shadow onto the black ground. The brand glow around a logo is light emitted by the logo (zero-offset, following its real silhouette), not a shadow.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do build every gray as white at an alpha over #050505; use the hairline (10% white) for all borders and dividers.",
+      "Do keep green limited to the availability dot, and brand color contained inside each project's logo box.",
+      "Do set headlines in Schibsted Grotesk 700 with negative tracking (-0.03em to -0.04em) and UI text in Inter 400.",
+      "Do use pills and circles for controls, and 12/16/24px for fields, media, and cards.",
+      "Do animate with `cubic-bezier(0.19, 1, 0.22, 1)` and provide a reduced-motion path for every moving element.",
+      "Do reuse the white arrow circle as the \"go / open\" cue."
+    ],
+    "donts": [
+      "Don't introduce blues, brand gradients, or any second accent color in the site's own UI, including red for errors (project brand light inside logo boxes is the only exception).",
+      "Don't place a full screenshot or a logo with its own background as a project's card image; upload the transparent PNG and let the box light it.",
+      "Don't use font weights other than 400 and 700.",
+      "Don't cast drop shadows; use glass blur, inner glow, or a halo.",
+      "Don't replace the drifting line grid with particles or noise backgrounds.",
+      "Don't fall back to a uniform corporate card grid with agency phrasing; one idea per viewport.",
+      "Don't use emojis."
+    ]
+  }
+}

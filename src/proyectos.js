@@ -18,10 +18,11 @@
 //                                          // Sin esta línea, la caja lleva solo el glow.
 //     problema: 'Qué problema tenía el cliente.',
 //     solucion: 'Qué se hizo y qué cambió.',
-//     galeria: [
+//     galeria: [                            // imágenes .jpg, .png, .webp o .gif (los gifs se animan solos)
 //       { src: '/proyectos/nombre-galeria-1.jpg', alt: 'Qué se ve en la imagen' },
 //       { src: '/proyectos/nombre-galeria-2.jpg', alt: 'Qué se ve en la imagen' },
 //       { src: '/proyectos/nombre-galeria-3.jpg', alt: 'Qué se ve en la imagen' },
+//       // Podés poner 1, 2, 3 o más. Sin galería (o sin la línea), el detalle no muestra ese bloque.
 //     ],
 //   },
 
@@ -39,7 +40,7 @@ export const proyectos = [
     
     problema: "Oficinistas tenian problemas con el rellenado de datos de una plataforma, tardaban mucho y se equivocaban en las cosas que ponían.",
     solucion: "Se desarrolló una herramienta que permite rellenar automáticamente los campos de un formulario, con la posibilidad de personalizar los valores a rellenar y extenderse hacia otras plataformas.",
-    galeria: [PENDIENTE, PENDIENTE, PENDIENTE],
+    galeria: [{ src: '/proyectos/proyecto-1-galeria-1.webp', alt: 'Captura del proyecto 1' }],
   },
   {
     titulo: 'Pool Over',

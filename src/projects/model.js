@@ -43,6 +43,7 @@ export function toProject(raw, index) {
     efecto,
     problema: raw.problema ?? '',
     solucion: raw.solucion ?? '',
-    galeria: raw.galeria ?? [],
+    // Los placeholders (/placeholders/...) no se muestran: la galería solo tiene imágenes o gifs reales.
+    galeria: (raw.galeria ?? []).filter((image) => image?.src && !image.src.startsWith('/placeholders/')),
   };
 }

@@ -99,6 +99,7 @@ async function check(root) {
       const g = findExact(publicDir, image.src);
       if (g.status === 'missing') warnings.push(say(`no existe la imagen de galería "${image.src}".`));
       if (g.status === 'case') warnings.push(say(`la imagen de galería "${image.src}" existe como "${g.real}" (revisá mayúsculas).`));
+      if (g.status === 'ok' && statSync(g.file).size > 4 * 1024 * 1024) warnings.push(say(`"${image.src}" pesa ${(statSync(g.file).size / 1048576).toFixed(1)} MB: puede tardar en cargar (sobre todo los gifs). Probá comprimirlo o exportarlo como .webp animado.`));
     }
   });
   return { errors, warnings };

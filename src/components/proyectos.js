@@ -106,11 +106,14 @@ function renderDetail(dialog, project, labels, cardBox) {
         block(labels.problema, project.problema),
         block(labels.solucion, project.solucion),
       ]),
-      el(
-        'div',
-        { class: 'detail__gallery', 'data-detail-fade': true },
-        project.galeria.map((img) => el('figure', {}, image(img, 'detail__img'))),
-      ),
+      // Sin imágenes cargadas, el bloque no existe (no se muestran placeholders).
+      project.galeria.length
+        ? el(
+            'div',
+            { class: 'detail__gallery', 'data-detail-fade': true },
+            project.galeria.map((img) => el('figure', {}, image(img, 'detail__img'))),
+          )
+        : null,
       el('div', { class: 'detail__foot' }, pillButton(labels.cerrar, 'arrow-left', 'btn-pill--back detail__close')),
     ]),
   );

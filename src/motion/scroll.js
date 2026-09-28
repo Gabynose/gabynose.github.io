@@ -1,5 +1,6 @@
 // Scroll suave (Lenis). Se desactiva si el usuario pide movimiento reducido.
 import Lenis from 'lenis';
+import { isLite, onLite } from '../perf.js';
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const ANCHOR_SCROLL = { duration: 1.4, easing: (t) => 1 - Math.pow(1 - t, 4) };
@@ -7,7 +8,8 @@ const ANCHOR_SCROLL = { duration: 1.4, easing: (t) => 1 - Math.pow(1 - t, 4) };
 let lenis = null;
 
 function setupLenis() {
-  if (reduceMotion.matches) {
+  // En PCs lentas el scroll nativo no depende del hilo principal: no se traba aunque la página esté ocupada.
+  if (reduceMotion.matches || isLite()) {
     lenis?.destroy();
     lenis = null;
     return;
@@ -41,4 +43,5 @@ export function setupScroll() {
 
   setupLenis();
   reduceMotion.addEventListener('change', setupLenis);
+  onLite(setupLenis); // si la PC resulta lenta durante la visita, se pasa al scroll nativo
 }

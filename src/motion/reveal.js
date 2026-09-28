@@ -8,8 +8,12 @@ function setDelays(block) {
   let lineTop = null;
   let line = -1;
   let inLine = 0;
-  block.querySelectorAll('.reveal-word').forEach((word) => {
-    const top = word.getBoundingClientRect().top; // posición real, aunque la palabra esté dentro de un resaltado
+  // Primero se leen todas las posiciones y recién después se escribe: mezclar lecturas y escrituras
+  // fuerza un reflow por palabra (en PCs lentas, cientos de milisegundos).
+  const words = [...block.querySelectorAll('.reveal-word')];
+  const tops = words.map((word) => word.getBoundingClientRect().top); // posición real, aunque la palabra esté dentro de un resaltado
+  words.forEach((word, index) => {
+    const top = tops[index];
     if (lineTop === null || Math.abs(top - lineTop) > 4) {
       lineTop = top;
       line += 1;

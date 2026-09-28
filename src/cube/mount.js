@@ -2,6 +2,7 @@
 // (OffscreenCanvas): la preparación y el dibujo no bloquean el hilo principal. Si no, corre aquí.
 // Este archivo solo conecta la página con la escena: tamaño, visibilidad y arrastre.
 import { el, prefersReducedMotion } from '../dom.js';
+import { isLite, onLite } from '../perf.js';
 
 function supportsWebGL() {
   try {
@@ -43,12 +44,17 @@ async function startInPage(canvas, options) {
 }
 
 function connect(container, canvas, scene) {
-  const dpr = () => Math.min(window.devicePixelRatio || 1, 2);
+  // Modo liviano: el cubo se dibuja a resolución 1x (un cuarto de los píxeles en pantallas 2x).
+  const dpr = () => (isLite() ? 1 : Math.min(window.devicePixelRatio || 1, 2));
 
   new ResizeObserver(([entry]) => {
     const { width, height } = entry.contentRect;
     scene.resize(width, height, dpr());
   }).observe(container);
+  onLite(() => {
+    const { width, height } = container.getBoundingClientRect();
+    scene.resize(width, height, 1);
+  });
 
   // Solo se dibuja si el cubo está en pantalla y la pestaña visible.
   let onScreen = true;
@@ -90,7 +96,7 @@ export function mountCube(container) {
   const load = async () => {
     const reducedMotion = prefersReducedMotion();
     const { width, height } = container.getBoundingClientRect();
-    const options = { reducedMotion, width, height, dpr: Math.min(window.devicePixelRatio || 1, 2) };
+    const options = { reducedMotion, width, height, dpr: isLite() ? 1 : Math.min(window.devicePixelRatio || 1, 2), antialias: !isLite() };
 
     let canvas = newCanvas();
     container.append(canvas);

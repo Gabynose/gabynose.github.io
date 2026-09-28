@@ -1,7 +1,7 @@
 // Caja del proyecto: fondo oscuro + luz de marca + logo.
 // La misma caja se usa en la tarjeta y en la cabecera del detalle.
-import { el, prefersReducedMotion } from '../dom.js';
-import { createSparks, drawFire, seedFrom } from './fire.js';
+import { el } from '../dom.js';
+import { drawFire, seedFrom } from './fire.js';
 import { logoInLogosDir } from './paths.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -19,10 +19,20 @@ function logoFootprint(contentWidth, contentHeight) {
   return { w: LOGO_MAX_W, h: LOGO_MAX_W / (aspect * BOX_RATIO) };
 }
 
+// Las mediciones se hacen de a una, con un respiro entre cada una: si las 4 cajas cargan juntas,
+// no caen todas en el mismo cuadro.
+let measuring = Promise.resolve();
+function enqueueMeasure(task) {
+  measuring = measuring
+    .then(task)
+    .catch(() => {})
+    .then(() => new Promise((resolve) => setTimeout(resolve, 16)));
+}
+
 // Dónde está el dibujo dentro del PNG: así un logo con margen transparente
 // se ve igual que uno recortado al borde. Se mide sobre una copia chica (barato).
 const SAMPLE = 256;
-function contentBounds(img) {
+async function contentBounds(img) {
   const W = img.naturalWidth;
   const H = img.naturalHeight;
   const full = { x: 0, y: 0, w: W, h: H };
@@ -34,7 +44,10 @@ function contentBounds(img) {
     canvas.width = w;
     canvas.height = h;
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
-    ctx.drawImage(img, 0, 0, w, h);
+    // Decodifica y reduce fuera del hilo principal; si el navegador no puede, se dibuja directo.
+    const bitmap = await createImageBitmap(img, { resizeWidth: w, resizeHeight: h, resizeQuality: 'low' }).catch(() => null);
+    ctx.drawImage(bitmap ?? img, 0, 0, w, h);
+    bitmap?.close();
     const data = ctx.getImageData(0, 0, w, h).data;
     let x0 = w;
     let y0 = h;
@@ -74,13 +87,10 @@ function cropVars(img, bounds) {
       '--crop-h': pct((H / bounds.h) * 100),
       '--crop-x': pct((-bounds.x / bounds.w) * 100),
       '--crop-y': pct((-bounds.y / bounds.h) * 100),
-      // mask-position en %: desplazamiento / (marco - imagen); sin margen, 0.
-      '--mask-x': pct(W === bounds.w ? 0 : (bounds.x / (W - bounds.w)) * 100),
-      '--mask-y': pct(H === bounds.h ? 0 : (bounds.y / (H - bounds.h)) * 100),
     },
   };
 }
-const MEASURE_VARS = ['--logo-w', '--logo-h', '--crop-w', '--crop-h', '--crop-x', '--crop-y', '--mask-x', '--mask-y'];
+const MEASURE_VARS = ['--logo-w', '--logo-h', '--crop-w', '--crop-h', '--crop-x', '--crop-y'];
 
 // Lugar que ocupa el nombre del proyecto cuando falta el logo (la luz se dimensiona igual).
 const MISSING_FOOTPRINT = { w: 50, h: 16 };
@@ -106,8 +116,7 @@ function ellipse(className, extra = {}) {
   return node;
 }
 
-// Ref 1: órbita fina e inclinada que pasa por detrás del logo.
-// El cometa (cola + cabeza) la recorre en la Interacción A.
+// Ref 1: órbita fina e inclinada que pasa por detrás del logo (fija, sin animación).
 function orbit() {
   const svg = document.createElementNS(SVG_NS, 'svg');
   svg.setAttribute('class', 'logo-box__orbit');
@@ -117,9 +126,6 @@ function orbit() {
   svg.setAttribute('focusable', 'false');
   svg.append(
     ellipse('logo-box__ring'),
-    // Sin non-scaling-stroke: con él, los guiones se miden en pantalla y pathLength deja de valer.
-    ellipse('logo-box__comet logo-box__comet--tail', { pathLength: 100, 'vector-effect': 'none' }),
-    ellipse('logo-box__comet logo-box__comet--head', { pathLength: 100, 'vector-effect': 'none' }),
   );
   return el('span', { class: 'logo-box__orbit-wrap', 'aria-hidden': 'true' }, [
     el('span', { class: 'logo-box__streak' }),
@@ -156,39 +162,15 @@ function mountFire(box, canvas, footprint, seed) {
   }).observe(box);
 }
 
-// Chispas de cada caja con fuego, y si la caja está a la vista.
-const sparksByBox = new WeakMap();
-
-function updateSparks(box) {
-  const entry = sparksByBox.get(box);
-  if (!entry) return;
-  const run =
-    entry.inView && box.classList.contains('is-active') && box.classList.contains('is-lit') && !prefersReducedMotion();
-  if (run) entry.sparks.start();
-  else entry.sparks.stop();
-}
-
-// Interacción A: enciende o apaga el estado activo (hover o foco) de una caja.
+// Interacción A: enciende o apaga el estado activo (hover o foco) de una caja. Solo cambia la luz (CSS).
 export function setBoxActive(box, active) {
-  if (box.classList.contains('is-active') === active) return;
   box.classList.toggle('is-active', active);
-  updateSparks(box);
-}
-
-// Fuera de pantalla las chispas no se calculan; al volver, retoman. No cambia nada visible.
-export function setBoxInView(box, inView) {
-  const entry = sparksByBox.get(box);
-  if (!entry || entry.inView === inView) return;
-  entry.inView = inView;
-  updateSparks(box);
 }
 
 // `like`: otra caja del mismo proyecto ya medida (la tarjeta). Si se pasa, esta nace
 // encendida con sus medidas, sin esperar a que cargue la imagen ni fundirse desde negro.
 export function logoBox(project, { eager = false, like = null } = {}) {
-  const hasFire = project.efecto === 'fuego';
-  const fire = hasFire ? el('canvas', { class: 'logo-box__fire', 'aria-hidden': 'true' }) : null;
-  const sparks = hasFire ? el('canvas', { class: 'logo-box__sparks', 'aria-hidden': 'true' }) : null;
+  const fire = project.efecto === 'fuego' ? el('canvas', { class: 'logo-box__fire', 'aria-hidden': 'true' }) : null;
   const img = el('img', {
     src: project.logo.src,
     alt: project.logo.alt,
@@ -202,25 +184,18 @@ export function logoBox(project, { eager = false, like = null } = {}) {
     el('span', { class: 'logo-box__light', 'aria-hidden': 'true' }),
     project.efecto === 'orbita' ? orbit() : null,
     fire,
-    sparks,
-    // Halo que respira: la silueta del logo en el color de marca, difuminada.
-    el('span', { class: 'logo-box__halo', 'aria-hidden': 'true' }, el('span')),
     frame,
   ]);
   for (const [name, value] of Object.entries(project.luz)) box.style.setProperty(name, value);
-  box.style.setProperty('--logo-url', `url(${JSON.stringify(project.logo.src)})`);
-  // Cada caja respira desfasada: no laten todas juntas.
-  box.style.setProperty('--breath-delay', `-${seedFrom(project.logo.src) % 6400}ms`);
-  if (sparks) sparksByBox.set(box, { sparks: createSparks(sparks, box), inView: true });
 
   const lightUp = (footprint, vars) => {
     for (const [name, value] of Object.entries(vars)) box.style.setProperty(name, value);
     box.classList.add('is-lit'); // la luz se enciende con el logo, nunca sola
     if (fire) mountFire(box, fire, footprint, seedFrom(project.logo.src));
   };
-  const measure = () => {
+  const measure = async () => {
     if (!img.naturalWidth) return;
-    const { footprint, vars } = cropVars(img, contentBounds(img));
+    const { footprint, vars } = cropVars(img, await contentBounds(img));
     lightUp(footprint, vars);
   };
   // Red de seguridad: sin logo, la caja muestra el nombre del proyecto con su luz (nunca una imagen rota).
@@ -238,7 +213,6 @@ export function logoBox(project, { eager = false, like = null } = {}) {
       retried = true;
       warnLogo(project, `no está en "${project.logo.src}"; se busca en "${fallback}".`);
       img.src = fallback;
-      box.style.setProperty('--logo-url', `url(${JSON.stringify(fallback)})`);
       return;
     }
     warnLogo(project, `no se encontró "${img.getAttribute('src')}". Se muestra el nombre del proyecto.`);
@@ -250,9 +224,8 @@ export function logoBox(project, { eager = false, like = null } = {}) {
     const vars = Object.fromEntries(MEASURE_VARS.map((name) => [name, like.style.getPropertyValue(name)]));
     lightUp({ w: parseFloat(vars['--logo-w']), h: parseFloat(vars['--logo-h']) }, vars);
     img.src = like.querySelector('img').src; // si la tarjeta tuvo que corregir la ruta, se usa la corregida
-    box.style.setProperty('--logo-url', like.style.getPropertyValue('--logo-url'));
-  } else if (img.complete && img.naturalWidth) measure();
-  else img.addEventListener('load', measure, { once: true });
+  } else if (img.complete && img.naturalWidth) enqueueMeasure(measure);
+  else img.addEventListener('load', () => enqueueMeasure(measure), { once: true });
 
   return box;
 }

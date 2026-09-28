@@ -32,6 +32,34 @@ function findExact(publicDir, url) {
   return caseMismatch ? { status: 'case', real: `/${real.join('/')}` } : { status: 'ok', file: dir };
 }
 
+// Fotogramas y tamaño de un gif o un webp (1 fotograma = imagen fija). null = otro formato.
+function mediaInfo(file) {
+  const b = readFileSync(file);
+  if (b.subarray(0, 3).toString('latin1') === 'GIF') {
+    let pos = 13 + (b[10] & 0x80 ? 3 * (1 << ((b[10] & 7) + 1)) : 0);
+    let frames = 0;
+    const skipBlocks = () => { while (pos < b.length && b[pos] !== 0) pos += b[pos] + 1; pos++; };
+    while (pos < b.length && b[pos] !== 0x3b) {
+      if (b[pos] === 0x21) { pos += 2; skipBlocks(); }
+      else if (b[pos] === 0x2c) {
+        frames++;
+        const packed = b[pos + 9];
+        pos += 10 + (packed & 0x80 ? 3 * (1 << ((packed & 7) + 1)) : 0) + 1;
+        skipBlocks();
+      } else break;
+    }
+    return { frames, width: b.readUInt16LE(6), height: b.readUInt16LE(8) };
+  }
+  if (b.subarray(0, 4).toString('latin1') === 'RIFF' && b.subarray(8, 12).toString('latin1') === 'WEBP') {
+    const extended = b.subarray(12, 16).toString('latin1') === 'VP8X';
+    return {
+      frames: extended && b[20] & 0x02 ? (b.toString('latin1').match(/ANMF/g) ?? []).length : 1,
+      width: extended ? b.readUIntLE(24, 3) + 1 : 0,
+      height: extended ? b.readUIntLE(27, 3) + 1 : 0,
+    };
+  }
+  return null;
+}
 function pngInfo(file) {
   const bytes = readFileSync(file);
   if (bytes.subarray(0, 8).toString('hex') !== PNG_SIGNATURE) return { png: false };
@@ -93,13 +121,19 @@ async function check(root) {
     if (!info.png) warnings.push(say(`"${url}" no es un PNG (aunque se llame así). Exportalo como PNG sin fondo.`));
     else if (!info.alpha) warnings.push(say(`"${url}" no tiene transparencia: se va a ver su fondo dentro de la caja. Exportalo como PNG sin fondo.`));
     else if (Math.max(info.width, info.height) < 600) warnings.push(say(`"${url}" mide ${info.width}×${info.height}; puede verse borroso en la vista detalle (ideal: el dibujo con 1200 px o más de lado mayor).`));
+    else if (Math.max(info.width, info.height) > 1000) warnings.push(say(`"${url}" mide ${info.width}×${info.height}: se muestra a ~330 px y el navegador decodifica todos sus píxeles, lo que traba el scroll en PCs lentas. Corré npm run optimizar (guarda el original en originales/).`));
 
     for (const image of project.galeria ?? []) {
       if (!image?.src?.startsWith('/')) continue;
       const g = findExact(publicDir, image.src);
       if (g.status === 'missing') warnings.push(say(`no existe la imagen de galería "${image.src}".`));
       if (g.status === 'case') warnings.push(say(`la imagen de galería "${image.src}" existe como "${g.real}" (revisá mayúsculas).`));
-      if (g.status === 'ok' && statSync(g.file).size > 4 * 1024 * 1024) warnings.push(say(`"${image.src}" pesa ${(statSync(g.file).size / 1048576).toFixed(1)} MB: puede tardar en cargar (sobre todo los gifs). Probá comprimirlo o exportarlo como .webp animado.`));
+      const animated = g.status === 'ok' && /[.](gif|webp)$/i.test(image.src) ? mediaInfo(g.file) : null;
+      if (g.status === 'ok' && statSync(g.file).size > 4 * 1024 * 1024) warnings.push(say(`"${image.src}" pesa ${(statSync(g.file).size / 1048576).toFixed(1)} MB: tarda en cargar. Si es un gif o webp animado, corré npm run optimizar.`));
+      if (animated && animated.frames > 1 && animated.width > 1280) warnings.push(say(`"${image.src}" es una animación de ${animated.width}×${animated.height}: se muestra a ~960 px y cada cuadro se escala, lo que puede hacerla titilar. Corré npm run optimizar (guarda el original en originales/).`));
+      if (g.status === 'ok' && animated && animated.frames === 1) {
+        warnings.push(say(`"${image.src}" tiene 1 solo fotograma: no se va a animar. Si esperabas movimiento, este archivo es una captura fija (pasa cuando se arrastra o se pega desde otra app). Copiá el archivo animado original a public/proyectos/. Si es una imagen fija a propósito, ignorá este aviso.`));
+      }
     }
   });
   return { errors, warnings };

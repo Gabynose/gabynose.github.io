@@ -95,7 +95,12 @@ export function renderContacto(root, { contacto, identidad }) {
       ? el(
           'figure',
           { class: 'contact__photo' },
-          el('img', { src: identidad.foto.src, alt: identidad.foto.alt, width: 400, height: 400, loading: 'lazy', decoding: 'async' }),
+          // El recorte circular deja acercar la foto (zoom en CSS) sin agrandar el anillo.
+          el(
+            'span',
+            { class: 'contact__photo-crop' },
+            el('img', { src: identidad.foto.src, alt: identidad.foto.alt, width: 400, height: 400, loading: 'lazy', decoding: 'async' }),
+          ),
         )
       : null,
     el('h2', { class: 'contact__title', id: 'contacto-titulo', text: contacto.titulo }),
@@ -136,7 +141,9 @@ export function renderContacto(root, { contacto, identidad }) {
     ]),
     el('p', { class: 'contact-form__status', role: 'status', 'aria-live': 'polite' }),
     // Verificación anti-bots (Turnstile): invisible salvo que Cloudflare dude del visitante.
-    contacto.endpoint && contacto.turnstileSiteKey ? el('div', { class: 'contact-form__turnstile' }) : null,
+    !contacto.whatsapp?.numero && contacto.endpoint && contacto.turnstileSiteKey
+      ? el('div', { class: 'contact-form__turnstile' })
+      : null,
   ]);
 
   root.replaceChildren(el('div', { class: 'contact', 'data-reveal': true }, [intro, form]));
@@ -149,7 +156,9 @@ export function setupContacto({ contacto, identidad }) {
   const button = form.querySelector('.btn-solid');
   const label = button.querySelector('.btn-solid__label');
   let attempted = false;
-  const turnstile = contacto.endpoint && contacto.turnstileSiteKey ? setupTurnstile(form, contacto.turnstileSiteKey) : null;
+  const whatsapp = contacto.whatsapp?.numero ? contacto.whatsapp : null;
+  const turnstile =
+    !whatsapp && contacto.endpoint && contacto.turnstileSiteKey ? setupTurnstile(form, contacto.turnstileSiteKey) : null;
 
   const setError = (control, message) => {
     const error = form.querySelector(`#${control.id}-error`);
@@ -195,6 +204,24 @@ export function setupContacto({ contacto, identidad }) {
     }
 
     const data = Object.fromEntries(controls.map((c) => [c.name, c.value.trim()]));
+
+    // WhatsApp: abre el chat con el mensaje precargado; la persona solo toca "enviar" allá.
+    if (whatsapp) {
+      const cierre = /[.!?…]$/.test(data.mensaje) ? data.mensaje : `${data.mensaje}.`;
+      const texto = whatsapp.mensaje
+        .replace('{nombre}', () => data.nombre)
+        .replace('{mensaje}', () => cierre)
+        .replace('{email}', () => data.email);
+      const link = document.createElement('a');
+      link.href = `https://wa.me/${whatsapp.numero}?text=${encodeURIComponent(texto)}`;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.click();
+      form.reset();
+      attempted = false;
+      setStatus(contacto.estados.whatsapp, 'ok');
+      return;
+    }
 
     // Sin servicio configurado: abre el programa de correo con el mensaje listo.
     if (!contacto.endpoint) {

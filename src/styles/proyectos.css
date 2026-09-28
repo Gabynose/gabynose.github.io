@@ -68,35 +68,15 @@
   scale: 1;
 }
 
-/* Ref 2: humo y chispas (src/projects/fire.js). */
-.logo-box__fire,
-.logo-box__sparks {
+/* Ref 2: humo del fuego (src/projects/fire.js). Imagen fija que se dibuja una vez. */
+.logo-box__fire {
   position: absolute;
   inset: 0;
   z-index: 1;
   width: 100%;
   height: 100%;
   pointer-events: none;
-}
-
-/* Interacción A: el humo se expande despacio mientras salen las chispas vivas. */
-.logo-box__fire {
-  transition:
-    opacity var(--dur-4) var(--ease-out),
-    scale 1.8s var(--ease-out);
-}
-
-.logo-box.is-active .logo-box__fire {
-  scale: 1.05;
-}
-
-.logo-box__sparks {
-  opacity: 0;
-  transition: opacity var(--dur-3) var(--ease-out);
-}
-
-.logo-box.is-active .logo-box__sparks {
-  opacity: 1;
+  transition: opacity var(--dur-4) var(--ease-out);
 }
 
 .logo-box__light,
@@ -127,78 +107,13 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Respiración del glow: solo opacidad y escala (sin repintar), lenta y desfasada por caja. */
-.logo-box__halo,
-.logo-box__logo {
-  grid-area: 1 / 1;
-}
-
-.logo-box__halo {
-  z-index: 1;
-  width: var(--logo-w);
-  height: var(--logo-h);
-  opacity: 0;
-  filter: blur(3cqi);
-  pointer-events: none;
-}
-
-/* Misma silueta que el logo, con el mismo recorte del margen transparente. */
-.logo-box__halo > span {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(var(--glow));
-  mask-image: var(--logo-url);
-  mask-repeat: no-repeat;
-  mask-size: var(--crop-w, 100%) var(--crop-h, 100%);
-  mask-position: var(--mask-x, 50%) var(--mask-y, 50%);
-}
-
-.logo-box.is-lit .logo-box__halo {
-  animation: halo-breathe 3.2s ease-in-out var(--breath-delay, 0s) infinite alternate both;
-}
-
-.logo-box.is-lit .logo-box__light {
-  animation: light-breathe 3.2s ease-in-out var(--breath-delay, 0s) infinite alternate both;
-}
-
-@keyframes halo-breathe {
-  from {
-    opacity: 0.12;
-    scale: 1;
-  }
-  to {
-    opacity: 0.8;
-    scale: 1.09;
-  }
-}
-
-@keyframes light-breathe {
-  from {
-    scale: 0.94;
-  }
-  to {
-    scale: 1.07;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .logo-box.is-lit .logo-box__halo,
-  .logo-box.is-lit .logo-box__light {
-    animation: none;
-  }
-
-  .logo-box.is-lit .logo-box__halo {
-    opacity: 0.55;
-  }
-}
-
 /* Marco del logo: tiene la proporción del dibujo (sin el margen transparente del PNG).
    Logos anchos los limita el ancho; cuadrados o altos, el alto.
    El brillo pegado sigue la silueta real del PNG: filo claro + halo cercano + halo amplio. */
 .logo-box__logo {
   position: relative;
   z-index: 2;
+  grid-area: 1 / 1;
   display: block;
   width: var(--logo-w);
   height: var(--logo-h);
@@ -231,10 +146,6 @@
     drop-shadow(0 0 0.2cqi rgb(var(--rim) / 0.85))
     drop-shadow(0 0 1.4cqi rgb(var(--glow) / 0.5))
     drop-shadow(0 0 5cqi rgb(var(--glow) / 0.28));
-}
-
-.logo-box.is-missing .logo-box__halo {
-  display: none;
 }
 
 /* La imagen se agranda y desplaza para que el dibujo llene el marco; el margen queda afuera. */
@@ -293,65 +204,8 @@
   stroke: rgb(var(--rim) / 0.8);
 }
 
-/* Interacción A: un cometa de luz recorre la órbita y se oculta al pasar por detrás del logo.
-   Cabeza corta y brillante + cola larga y tenue, con el mismo recorrido. */
-.logo-box__orbit .logo-box__comet {
-  opacity: 0;
-  stroke: rgb(var(--rim));
-  stroke-linecap: round;
-  animation: 3.4s linear infinite paused;
-  transition: opacity var(--dur-3) var(--ease-out);
-}
-
-/* La cola termina donde termina la cabeza: mismo avance, desfasada 18 unidades de 100. */
-.logo-box__orbit .logo-box__comet--head {
-  stroke-width: 2.5;
-  stroke-dasharray: 4 96;
-  filter: drop-shadow(0 0 3px rgb(var(--rim))) drop-shadow(0 0 8px rgb(var(--glow)));
-  animation-name: comet-head;
-}
-
-.logo-box__orbit .logo-box__comet--tail {
-  stroke: rgb(var(--glow));
-  stroke-width: 1.75;
-  stroke-dasharray: 22 78;
-  animation-name: comet-tail;
-}
-
-.logo-box.is-active .logo-box__comet {
-  opacity: 1;
-  animation-play-state: running;
-}
-
-.logo-box.is-active .logo-box__comet--tail {
-  opacity: 0.55;
-}
-
-@keyframes comet-head {
-  from {
-    stroke-dashoffset: 0;
-  }
-  to {
-    stroke-dashoffset: -100;
-  }
-}
-
-@keyframes comet-tail {
-  from {
-    stroke-dashoffset: 18;
-  }
-  to {
-    stroke-dashoffset: -82;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .logo-box__comet {
-    display: none;
-  }
-
-  .logo-box.is-active .logo-box__logo,
-  .logo-box.is-active .logo-box__fire {
+  .logo-box.is-active .logo-box__logo {
     scale: none;
   }
 }
@@ -651,6 +505,11 @@
   margin: 0;
 }
 
+/* Gifs y webp animados: capa propia, así cada cuadro nuevo no obliga a repintar el texto y la cuadrícula de alrededor. */
+.detail__anim {
+  will-change: transform;
+}
+
 .detail__hero {
   margin: 0;
 }
@@ -689,4 +548,15 @@
   .detail__block {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+/* Modo liviano (PC lenta, ver src/perf.js): sin grano y sin desenfoque en el botón "Volver". */
+.is-lite .logo-box::after {
+  display: none;
+}
+
+.is-lite .btn-pill--back {
+  background-color: rgb(20 20 20 / 0.9);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }

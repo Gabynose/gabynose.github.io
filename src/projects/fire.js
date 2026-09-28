@@ -1,4 +1,4 @@
-// Ref 2: humo turbulento y chispas del color de la marca, por detrás del logo.
+// Ref 2: humo turbulento y chispas del color de la marca, por detrás del logo (imagen fija, se dibuja una vez).
 // Canvas 2D. Se dibuja una vez por tamaño de caja; la semilla sale del logo,
 // así la tarjeta y el detalle muestran exactamente el mismo fuego.
 
@@ -130,7 +130,7 @@ function smoke(W, H, logo, colors, random) {
   return layer;
 }
 
-// Chispas: puntos y estelas que salen del logo; más densas cerca, más tenues lejos.
+// Chispas: puntos y estelas fijas que salen del logo; más densas cerca, más tenues lejos.
 function embers(ctx, W, H, logo, colors, random) {
   const scale = W / BASE_WIDTH;
   const core = mix(colors.glow, colors.rim, 0.65);
@@ -198,154 +198,6 @@ export function drawFire(canvas, { width, height, logoRect, style, seed }) {
   ctx.drawImage(smoke(width, height, logoRect, colors, random), 0, 0, width, height);
   ctx.filter = 'none';
   embers(ctx, width, height, logoRect, colors, random);
-}
-
-// ---------- Chispas vivas (Interacción A en cajas con fuego) ----------
-
-const SPARK_RATE = 26; // por segundo mientras está activa
-const SPARK_MAX = 40;
-const SPARK_BURST = 10; // al entrar, para que la respuesta se note enseguida
-
-function glowSprite(color) {
-  const size = 64;
-  const sprite = document.createElement('canvas');
-  sprite.width = size;
-  sprite.height = size;
-  const ctx = sprite.getContext('2d');
-  const gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
-  gradient.addColorStop(0, rgb(color, 0.9));
-  gradient.addColorStop(0.35, rgb(color, 0.28));
-  gradient.addColorStop(1, rgb(color, 0));
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, size, size);
-  return sprite;
-}
-
-// Chispas que nacen en el borde del logo, salen hacia afuera, suben un poco y se apagan.
-// El bucle solo corre mientras hay chispas vivas.
-export function createSparks(canvas, box) {
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-  let spawning = false;
-  let running = false;
-  let debt = 0;
-  let last = 0;
-  let size = '';
-  let view = null; // { W, H, logoW, logoH, scale, core, sprite }
-
-  function setup() {
-    const W = box.clientWidth;
-    const H = box.clientHeight;
-    if (!W || !H) return false;
-    const key = `${W}x${H}`;
-    if (key !== size) {
-      size = key;
-      const dpr = Math.min(2, window.devicePixelRatio || 1);
-      canvas.width = Math.round(W * dpr);
-      canvas.height = Math.round(H * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      particles = [];
-    }
-    const glow = parseTriplet(box.style.getPropertyValue('--glow'));
-    const rim = parseTriplet(box.style.getPropertyValue('--rim'));
-    view = {
-      W,
-      H,
-      logoW: (parseFloat(box.style.getPropertyValue('--logo-w')) / 100) * W,
-      logoH: (parseFloat(box.style.getPropertyValue('--logo-h')) / 100) * H,
-      scale: W / BASE_WIDTH,
-      core: mix(glow, rim, 0.7),
-      sprite: view?.sprite ?? glowSprite(glow),
-    };
-    return true;
-  }
-
-  function spawn() {
-    const { W, H, logoW, logoH, scale } = view;
-    const angle = Math.random() * Math.PI * 2;
-    const reach = 0.85 + Math.random() * 0.3;
-    const speed = (18 + Math.random() * 42) * scale;
-    particles.push({
-      x: W / 2 + Math.cos(angle) * (logoW / 2) * reach,
-      y: H / 2 + Math.sin(angle) * (logoH / 2) * reach,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed * 0.75 - 8 * scale,
-      age: 0,
-      life: 1.1 + Math.random() * 1.3,
-      size: (0.7 + Math.random() ** 2 * 1.6) * scale,
-      streak: Math.random() < 0.35,
-      phase: Math.random() * 10,
-    });
-  }
-
-  function frame(now) {
-    const dt = Math.min(0.05, (now - last) / 1000);
-    last = now;
-    const { W, H, scale, core, sprite } = view;
-
-    if (spawning) {
-      debt += SPARK_RATE * dt;
-      while (debt >= 1 && particles.length < SPARK_MAX) {
-        spawn();
-        debt -= 1;
-      }
-      debt = Math.min(debt, 1);
-    }
-
-    ctx.clearRect(0, 0, W, H);
-    ctx.globalCompositeOperation = 'lighter';
-    ctx.lineCap = 'round';
-    particles = particles.filter((p) => {
-      p.age += dt;
-      if (p.age >= p.life) return false;
-      p.vy -= 14 * scale * dt; // el calor las empuja hacia arriba
-      p.vx += Math.sin(p.age * 5 + p.phase) * 10 * scale * dt;
-      p.x += p.vx * dt;
-      p.y += p.vy * dt;
-
-      const t = p.age / p.life;
-      const alpha = Math.min(1, p.age / 0.15) * (1 - t * t);
-      const halo = p.size * 7;
-      ctx.globalAlpha = alpha * 0.75;
-      ctx.drawImage(sprite, p.x - halo, p.y - halo, halo * 2, halo * 2);
-      ctx.globalAlpha = alpha;
-      if (p.streak) {
-        ctx.strokeStyle = rgb(core, 1);
-        ctx.lineWidth = p.size;
-        ctx.beginPath();
-        ctx.moveTo(p.x - p.vx * 0.07, p.y - p.vy * 0.07);
-        ctx.lineTo(p.x, p.y);
-        ctx.stroke();
-      } else {
-        ctx.fillStyle = rgb(core, 1);
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      return true;
-    });
-    ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = 'source-over';
-
-    if (spawning || particles.length) requestAnimationFrame(frame);
-    else running = false;
-  }
-
-  return {
-    start() {
-      if (!setup()) return;
-      spawning = true;
-      for (let i = 0; i < SPARK_BURST && particles.length < SPARK_MAX; i++) spawn();
-      if (running) return;
-      running = true;
-      last = performance.now();
-      requestAnimationFrame(frame);
-    },
-    // Deja de generar; las chispas vivas terminan su recorrido.
-    stop() {
-      spawning = false;
-    },
-  };
 }
 
 // Pinta de entrada el fuego de otra caja (misma semilla, mismo dibujo) escalado a esta.

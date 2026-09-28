@@ -86,8 +86,8 @@ const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2
 
 // Crea la escena sobre un canvas (HTMLCanvasElement u OffscreenCanvas) y devuelve su control.
 // Los tiempos del arrastre llegan desde la página (event.timeStamp): todos usan el mismo reloj.
-export async function createCubeScene(canvas, { reducedMotion = false, width = 1, height = 1, dpr = 1 } = {}) {
-  const renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+export async function createCubeScene(canvas, { reducedMotion = false, width = 1, height = 1, dpr = 1, antialias = true } = {}) {
+  const renderer = new WebGLRenderer({ canvas, antialias, alpha: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(dpr);
   renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = ACESFilmicToneMapping;

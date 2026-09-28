@@ -4,7 +4,7 @@
 import { el, icon, prefersReducedMotion, revealWords } from '../dom.js';
 import { lockScroll } from '../motion/scroll.js';
 import { driftGrid } from '../motion/grid.js';
-import { logoBox, setBoxActive, setBoxInView } from '../projects/logo-box.js';
+import { logoBox, setBoxActive } from '../projects/logo-box.js';
 import { seedFire } from '../projects/fire.js';
 
 const EASE_OUT = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -111,7 +111,10 @@ function renderDetail(dialog, project, labels, cardBox) {
         ? el(
             'div',
             { class: 'detail__gallery', 'data-detail-fade': true },
-            project.galeria.map((img) => el('figure', {}, image(img, 'detail__img'))),
+            // Se cargan al abrir el detalle (no "lazy"): una animación a medio bajar repite solo los cuadros que llegaron y parece que titila.
+            project.galeria.map((img) =>
+              el('figure', { class: /[.](gif|webp)$/i.test(img.src) ? 'detail__anim' : null }, image(img, 'detail__img', true)),
+            ),
           )
         : null,
       el('div', { class: 'detail__foot' }, pillButton(labels.cerrar, 'arrow-left', 'btn-pill--back detail__close')),
@@ -132,16 +135,6 @@ function fly(figure, fromRect, duration) {
   }).finished;
 }
 
-// La caja del detalle retoma los ciclos donde estaba la de la tarjeta: respiración y cometa sin saltos.
-const SYNCED = ['.logo-box__halo', '.logo-box__light', '.logo-box__comet--head', '.logo-box__comet--tail'];
-function syncCycles(fromBox, toBox) {
-  for (const selector of SYNCED) {
-    const from = fromBox.querySelector(selector)?.getAnimations().find((a) => a instanceof CSSAnimation);
-    const to = toBox.querySelector(selector)?.getAnimations().find((a) => a instanceof CSSAnimation);
-    if (from && to && from.currentTime != null) to.currentTime = from.currentTime;
-  }
-}
-
 // Si la tarjeta ya estaba encendida (hover o foco), la caja del detalle arranca encendida, sin rampa.
 function skipTransitions(box) {
   box
@@ -160,7 +153,6 @@ export function setupProyectos({ proyectos }) {
   let current = null; // { project, card, trigger }
   let state = 'closed'; // closed | opening | open | closing
   let footObserver = null;
-  let heroObserver = null;
 
   // Con el detalle ya abierto, la vista general se oculta: nunca se ven las dos mezcladas.
   const hidePage = (hidden) => document.documentElement.classList.toggle('is-detail-open', hidden);
@@ -202,18 +194,13 @@ export function setupProyectos({ proyectos }) {
     dialog.querySelector('.detail__close')?.focus({ preventScroll: true });
     watchFooter();
 
-    // En el detalle, la caja principal queda con la Interacción A encendida todo el tiempo.
-    // Se enciende ya, antes del vuelo: la animación sigue viva durante toda la transición.
+    // En el detalle, la caja principal queda con la luz de la Interacción A encendida todo el tiempo.
+    // Se enciende ya, antes del vuelo.
     const figure = dialog.querySelector('.detail__hero');
     const heroBox = figure.querySelector('.logo-box');
     seedFire(cardBox, heroBox);
     setBoxActive(heroBox, true);
-    heroObserver = new IntersectionObserver(([entry]) => setBoxInView(heroBox, entry.isIntersecting), {
-      root: dialog,
-    });
-    heroObserver.observe(figure);
     if (cardWasActive) skipTransitions(heroBox);
-    syncCycles(cardBox, heroBox);
     setBoxActive(cardBox, false);
 
     const settle = () => {
@@ -254,8 +241,7 @@ export function setupProyectos({ proyectos }) {
     const { card, trigger } = current;
     hidePage(false); // la vista general reaparece detrás mientras el detalle se desvanece
 
-    // Corta la apertura si seguía animándose. La cuadrícula y las animaciones CSS de la caja
-    // (respiración, cometa) siguen hasta que termina el fundido.
+    // Corta la apertura si seguía animándose (la cuadrícula tiene animación propia y sigue).
     dialog
       .getAnimations({ subtree: true })
       .filter(
@@ -303,10 +289,7 @@ export function setupProyectos({ proyectos }) {
   function cleanup() {
     if (state === 'closed') return;
     footObserver?.disconnect();
-    heroObserver?.disconnect();
-    heroObserver = null;
     footObserver = null;
-    // Apaga la caja del detalle antes de quitarla: si no, sus chispas seguirían generándose.
     const heroBox = dialog.querySelector('.detail__hero .logo-box');
     if (heroBox) setBoxActive(heroBox, false);
     dialog.getAnimations({ subtree: true }).forEach((animation) => animation.cancel());

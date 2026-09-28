@@ -31,3 +31,14 @@
   font-display: swap;
   src: url('/fonts/inter-latin-700-normal.woff2') format('woff2');
 }
+
+/* Satoshi Black (Fontshare, ITF Free Font License): SOLO para el nombre del inicio.
+   No se aloja en el repositorio: la licencia no permite subir los archivos a un servidor público,
+   así que se carga desde el servidor oficial de Fontshare. Si no llega, el nombre usa Schibsted Grotesk. */
+@font-face {
+  font-family: 'Satoshi';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('https://cdn.fontshare.com/wf/NHPGVFYUXYXE33DZ75OIT4JFGHITX5PE/PSUTMASCDJTVPERDYJZPN23BVUFUCQIF/J64QX5IPOHK56I2KYUNBQ5M2XWZEYKYX.woff2') format('woff2');
+}

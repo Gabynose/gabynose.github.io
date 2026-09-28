@@ -20,6 +20,13 @@ const CONFIG = {
 const organicOffset = (angle, seed) =>
   Math.sin(angle * 2.1 + seed) * 0.15 + Math.sin(angle * 3.7 + seed * 1.3) * 0.09 + Math.sin(angle * 6.3 + seed * 0.7) * 0.05;
 
+import { isLite, onLite } from '../perf.js';
+
+// Cantidad de niveles de opacidad: las cruces del mismo nivel se dibujan con un único trazo (en vez de uno por cruz).
+const OPACITY_LEVELS = 24;
+const LITE_COUNT = 120;
+const LITE_FRAME_MS = 33; // en modo liviano se actualiza a ~30 fps
+
 export function createCrosses(container, { reducedMotion = false } = {}) {
   const canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
@@ -30,7 +37,8 @@ export function createCrosses(container, { reducedMotion = false } = {}) {
 
   const small = window.matchMedia('(max-width: 767px)').matches;
   const lowEnd = (navigator.hardwareConcurrency || 4) <= 4;
-  const count = small ? 160 : lowEnd ? 220 : 300;
+  const count = isLite() ? LITE_COUNT : small ? 160 : lowEnd ? 220 : 300;
+  let minFrame = isLite() ? LITE_FRAME_MS : 0;
 
   let width = 0;
   let height = 0;
@@ -81,7 +89,7 @@ export function createCrosses(container, { reducedMotion = false } = {}) {
     width = rect.width;
     height = rect.height;
     if (!width || !height) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -90,18 +98,30 @@ export function createCrosses(container, { reducedMotion = false } = {}) {
     particles = Array.from({ length: count }, () => makeParticle(width / 2, height / 2, scale, seed));
   }
 
+  // Estilos precalculados y grupos reutilizados: dibujar no crea strings ni arreglos nuevos en cada cuadro.
+  const styles = Array.from({ length: OPACITY_LEVELS }, (_, i) => `rgba(${CONFIG.color},${((i + 0.5) / OPACITY_LEVELS).toFixed(3)})`);
+  const groups = Array.from({ length: OPACITY_LEVELS }, () => []);
+
   function draw() {
     ctx.clearRect(0, 0, width, height);
     ctx.lineWidth = CONFIG.crossWidth;
     ctx.lineCap = 'square';
+    for (const group of groups) group.length = 0;
     for (const p of particles) {
       const opacity = Math.max(0, Math.min(1, p.baseOpacity + Math.sin(p.phase) * 0.15));
-      ctx.strokeStyle = `rgba(${CONFIG.color},${opacity.toFixed(3)})`;
+      groups[Math.min(OPACITY_LEVELS - 1, Math.floor(opacity * OPACITY_LEVELS))].push(p);
+    }
+    for (let level = 0; level < OPACITY_LEVELS; level++) {
+      const group = groups[level];
+      if (!group.length) continue;
+      ctx.strokeStyle = styles[level];
       ctx.beginPath();
-      ctx.moveTo(p.x - p.size, p.y);
-      ctx.lineTo(p.x + p.size, p.y);
-      ctx.moveTo(p.x, p.y - p.size);
-      ctx.lineTo(p.x, p.y + p.size);
+      for (const p of group) {
+        ctx.moveTo(p.x - p.size, p.y);
+        ctx.lineTo(p.x + p.size, p.y);
+        ctx.moveTo(p.x, p.y - p.size);
+        ctx.lineTo(p.x, p.y + p.size);
+      }
       ctx.stroke();
     }
   }
@@ -127,12 +147,23 @@ export function createCrosses(container, { reducedMotion = false } = {}) {
     }
   }
 
+  // Si la PC resulta lenta durante la visita: menos partículas y menos cuadros por segundo.
+  onLite(() => {
+    minFrame = LITE_FRAME_MS;
+    if (particles.length > LITE_COUNT) particles.length = LITE_COUNT;
+  });
+
   let rafId = null;
   let last = 0;
   let onScreen = false;
 
   function frame(now) {
     rafId = null;
+    // Modo liviano: se salta el cuadro si pasó menos de ~33 ms desde el último.
+    if (minFrame && last && now - last < minFrame - 2) {
+      if (onScreen) rafId = requestAnimationFrame(frame);
+      return;
+    }
     const k = Math.min((now - (last || now)) / (1000 / 60), 3);
     last = now;
     step(k);

@@ -21,6 +21,7 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
 const ICONS = {
   'arrow-up-right': ['M4.5 11.5 11.5 4.5', 'M5.5 4.5h6v6'],
   'arrow-left': ['M12.5 8h-9', 'M7.5 4 3.5 8l4 4'],
+  'arrow-right': ['M3.5 8h9', 'M8.5 4l4 4-4 4'],
 };
 
 export function icon(name, className = 'icon') {

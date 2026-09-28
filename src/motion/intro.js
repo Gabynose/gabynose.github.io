@@ -15,10 +15,11 @@ export function playIntro() {
     word.animate([{ transform: 'translateY(105%)' }, { transform: 'none' }], opts(150 + i * 90, 1300));
   });
 
-  document.querySelectorAll('.hero__meta > *').forEach((node, i) => {
+  // Línea superior primero, y bajada y botón después del nombre.
+  document.querySelectorAll('.hero__eyebrow, .hero__lead, .hero__actions').forEach((node, i) => {
     node.animate(
       [{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }],
-      opts(400 + i * 110, 1100),
+      opts(i === 0 ? 100 : 400 + (i - 1) * 130, 1100),
     );
   });
 

@@ -23,10 +23,6 @@ export const content = {
       { label: 'LinkedIn', icono: 'linkedin', url: 'https://www.linkedin.com/in/gabriel-boggia-70b16619b/' },
       { label: 'GitHub', icono: 'github', url: null }, // pendiente
     ],
-    disponible: {
-      activo: true,
-      texto: 'Disponible para trabajar',
-    },
   },
 
   nav: {
@@ -43,7 +39,11 @@ export const content = {
 
   hero: {
     titulo: 'Gabriel Boggia',
+    // Línea sobre el nombre (se muestra en mayúsculas).
     subtitulo: 'Desarrollador de software',
+    // Bajada bajo el nombre.
+    descripcion: 'Creo soluciones digitales que combinan tecnología, diseño y propósito.',
+    cta: { label: 'Ver proyectos', href: '#proyectos' },
   },
 
   problema: {
@@ -75,7 +75,13 @@ export const content = {
       solucion: 'Solución',
       cerrar: 'Volver a proyectos',
     },
-    lista: proyectos.map(toProject),
+    // Solo los proyectos con logo real: los pendientes no ocupan lugar (la última caja suelta queda centrada).
+    lista: proyectos.map(toProject).filter((project) => {
+      if (project.pendiente && import.meta.env.DEV) {
+        console.info(`[proyectos] "${project.titulo}" oculto: todavía usa un logo de prueba. Subí su logo y cambiá logo.src.`);
+      }
+      return !project.pendiente;
+    }),
   },
 
   contacto: {
@@ -88,6 +94,13 @@ export const content = {
       mensaje: { label: 'Mensaje', placeholder: '¿En qué te puedo ayudar?' },
     },
     boton: 'Enviar mensaje',
+    // Al enviar, se abre WhatsApp con tu número y el mensaje ya escrito (wa.me). Tiene prioridad sobre `endpoint`.
+    // `numero`: código de país + celular, solo dígitos (+54 9 11 5163-3140 → 5491151633140). Con `null`, se usa `endpoint`/mailto.
+    // `mensaje`: plantilla con {nombre}, {mensaje} y {email}. Al {mensaje} se le agrega el punto final si no lo trae.
+    whatsapp: {
+      numero: '5491151633140',
+      mensaje: 'Hola, soy {nombre}... {mensaje} Este es mi mail: {email}',
+    },
     // URL del Worker de Cloudflare que envía el mensaje a tu mail (ver worker/README.md).
     // Mientras sea `null`, al enviar se abre el programa de correo del visitante con el mensaje listo.
     endpoint: null,
@@ -98,6 +111,7 @@ export const content = {
       exito: 'Mensaje enviado. Te respondo pronto.',
       error: 'No se pudo enviar. Probá de nuevo o escribime a gabrielboggia@gmail.com.',
       mailto: 'Se abrió tu programa de correo con el mensaje listo para enviar.',
+      whatsapp: 'Se abrió WhatsApp con tu mensaje listo. Solo falta enviarlo.',
     },
     errores: {
       requerido: 'Completá este campo.',

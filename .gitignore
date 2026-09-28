@@ -12,3 +12,6 @@ worker/.wrangler
 
 # Brief y referencias privadas (quedan solo en la PC)
 docs/
+
+# Originales de gifs/webp antes de optimizar (npm run optimizar)
+originales/

@@ -13,6 +13,7 @@ import './styles/contacto.css';
 
 import { content } from './content.js';
 import { render } from './render.js';
+import { setupPerf } from './perf.js';
 import { playIntro } from './motion/intro.js';
 import { mountCube } from './cube/mount.js';
 import { mountCrosses } from './crosses/crosses.js';
@@ -23,6 +24,7 @@ import { setupGrid } from './motion/grid.js';
 import { setupProyectos } from './components/proyectos.js';
 import { setupContacto } from './components/contacto.js';
 
+setupPerf(); // antes de todo: el modo liviano condiciona lo que se arma
 render(content);
 setupGrid();
 playIntro();

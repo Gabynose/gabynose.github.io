@@ -10,6 +10,14 @@ function warn(titulo, message) {
   if (import.meta.env.DEV) console.warn(`[proyectos] "${titulo}": ${message}`);
 }
 
+// Un proyecto sin logo real (sin src, en /placeholders/ o un logo-prueba-*) todavía no está "ocupado":
+// no se muestra en la grilla hasta que se suba su logo.
+export function isPending(logoSrc) {
+  const src = String(logoSrc ?? '').trim();
+  const name = src.split('/').pop().toLowerCase();
+  return !src || src.includes('/placeholders/') || name.startsWith('logo-prueba');
+}
+
 export function toProject(raw, index) {
   const titulo = raw.titulo ?? `Proyecto ${index + 1}`;
   const logo = raw.logo ?? {};
@@ -37,6 +45,7 @@ export function toProject(raw, index) {
   return {
     id: `proyecto-${index + 1}`,
     titulo,
+    pendiente: isPending(logo.src),
     descripcion: raw.descripcion ?? '',
     logo: { src: logoUrl(logo.src), alt: `Logo de ${titulo}` },
     luz: brandLight(color, color2),

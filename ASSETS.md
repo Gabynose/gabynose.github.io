@@ -50,5 +50,11 @@ En `src` va **solo el nombre del archivo**, igual que como se llama (mayúsculas
 ## Ya no se usan (se pueden borrar)
 `public/proyectos/proyecto-1-principal.jpg` (reemplazado por el logo del proyecto).
 
+## Tamaño de los logos
+Los logos se muestran a ~330 px. Con más de 1000 px de lado el navegador decodifica píxeles de más y el scroll se traba en PCs lentas. Si el chequeo avisa, correr `npm run optimizar -- nombre.png` (guarda el original en `originales/`).
+
+## Gifs y webp animados (galería)
+Copiar el archivo animado original a `public/proyectos/` (no arrastrarlo ni pegarlo desde otra app: llega como imagen fija). Si mide más de 1280 px de ancho o pesa más de 4 MB, correr `npm run optimizar`.
+
 ## Formato
 Logos: PNG sin fondo (con o sin margen transparente). Galería: JPG o WEBP. Nombre en minúsculas, sin espacios.

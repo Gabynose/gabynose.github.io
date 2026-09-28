@@ -39,7 +39,7 @@ Shared by Gabriel directly with potential clients. Viewed on desktop and mobile.
 
 - Name: Gabriel Boggia. Role shown under the name: "Desarrollador de software".
 - Email: gabrielboggia@gmail.com. Networks: LinkedIn, GitHub (URLs pending).
-- Total monochrome: black background, white text, no blues, no brand gradients. The only living color is the green "Disponible para trabajar" status, shown under the name on the hero.
+- Total monochrome: black background, white text, no blues, no brand gradients. The single accent is green (#3ddc84): hero eyebrow line, hero CTA border, glow under the current nav link.
 - Background: plain black with a grid of thin white lines that drifts constantly (diagonal, slow). No particle backgrounds.
 - Typography: a characterful grotesque for huge headlines (Schibsted Grotesk), Inter for small labels and data. Only regular (400) or bold (700), never intermediate weights.
 - Low density, lots of air, few things per screen.

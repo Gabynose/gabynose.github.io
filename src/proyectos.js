@@ -14,7 +14,7 @@
 //       color: '#7c3aed',                  // color principal de la marca: tiñe la luz de la caja
 //       color2: '#c026d3',                 // opcional: segundo color de la marca
 //     },
-//     efecto: 'fuego',                     // opcional: 'fuego' (humo y chispas) u 'orbita' (curva de luz).
+//     efecto: 'fuego',                     // opcional: 'fuego' (humo y chispas fijos) u 'orbita' (curva de luz fija).
 //                                          // Sin esta línea, la caja lleva solo el glow.
 //     problema: 'Qué problema tenía el cliente.',
 //     solucion: 'Qué se hizo y qué cambió.',
@@ -40,7 +40,7 @@ export const proyectos = [
     
     problema: "Oficinistas tenian problemas con el rellenado de datos de una plataforma, tardaban mucho y se equivocaban en las cosas que ponían.",
     solucion: "Se desarrolló una herramienta que permite rellenar automáticamente los campos de un formulario, con la posibilidad de personalizar los valores a rellenar y extenderse hacia otras plataformas.",
-    galeria: [{ src: '/proyectos/proyecto-1-galeria-1.webp', alt: 'Captura del proyecto 1' }],
+    galeria: [{ src: '/proyectos/proyecto-1-galeria-1.gif', alt: 'Captura del proyecto 1' }],
   },
   {
     titulo: 'Pool Over',
@@ -52,13 +52,13 @@ export const proyectos = [
     galeria: [{ src: '/proyectos/proyecto-2-galeria-1.jpg', alt: 'Imagen 1 del proyecto 2' }, { src: '/proyectos/proyecto-2-galeria-2.jpg', alt: 'Imagen 2 del proyecto 2' }, { src: '/proyectos/proyecto-2-galeria-3.jpg', alt: 'Imagen 3 del proyecto 2' }],
   },
   {
-    titulo: 'Flowly',
-    descripcion: "En desarrollo.",
-    logo: { src: 'logo-prueba-3.png', color: '#22d3ee' },
-    efecto: 'orbita',
-    problema: LOREM_LARGO,
-    solucion: LOREM_LARGO,
-    galeria: [PENDIENTE, PENDIENTE, PENDIENTE],
+    titulo: 'Belitos',
+    descripcion: "Landing page para un kiosco de barrio.",
+    logo: { src: 'proyecto-3-principal.png', color: '#d75de2' },
+    
+    problema: "El kiosco necesitaba una landing page inspirada en el estilo del local, para promocionar sus productos y servicios, atraer clientes y realizar pedidos.",
+    solucion: "Se desarrolló una landing page con un diseño atractivo y funcional, que permite a los clientes conocer los productos y servicios del kiosco, y contactarse con el local.",
+    galeria: [{ src: '/proyectos/proyecto-3-galeria-1.webp', alt: 'Captura del proyecto 3' }],
   },
   {
     titulo: 'Proyecto 4',

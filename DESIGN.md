@@ -123,7 +123,7 @@ components:
 
 **Creative North Star: "The Night Workshop"**
 
-A single dark room where the work is done in the open. The page is near-black, crossed by a fine white grid that never stops drifting, and everything on it is white type or white at lower opacity. The only object with volume is a glossy black Rubik cube that turns and solves itself; the only living color in the room's own voice is a small green dot that says the craftsman is available. The one sanctioned exception is the client work: each project sits in a black box lit from behind by its own brand color, so the client's identity stays intact while the room around it stays monochrome. Skill is demonstrated by the page's own finish (masked type reveals, a nav pill that drops and stretches, a lit logo box that flies from card to detail without ever going still), not claimed in copy.
+A single dark room where the work is done in the open. The page is near-black, crossed by a fine white grid that never stops drifting, and everything on it is white type or white at lower opacity. The only object with volume is a glossy black Rubik cube that turns and solves itself; the room's own only color is a green accent used sparingly in the hero (a short line, the button's border) and as a glow under the current nav link. The one sanctioned exception is the client work: each project sits in a black box lit from behind by its own brand color, so the client's identity stays intact while the room around it stays monochrome. Skill is demonstrated by the page's own finish (masked type reveals, a nav pill that drops and stretches, a lit logo box that flies from card to detail without ever going still), not claimed in copy.
 
 Density is low and deliberate: one idea per viewport, huge grotesque headlines, generous section padding, thin hairlines instead of boxes. Surfaces are glass or near-black panels separated by one-pixel white lines at 10% opacity; depth comes from blur, inner glow, and the lit halo behind the cube, never from drop shadows. Motion is slow and liquid, all on one exponential ease-out curve, and fully yields to reduced motion.
 
@@ -131,7 +131,7 @@ The confirmed rejection is the generic corporate portfolio: identical card grids
 
 **Key Characteristics:**
 - Total monochrome on #050505; grays are white at reduced opacity, not separate hues.
-- One green status dot is the site's own only color; project brand light lives strictly inside the project boxes.
+- One green accent, only in the hero and the current nav link; project brand light lives strictly inside the project boxes.
 - Schibsted Grotesk for everything large, Inter for everything small; only weights 400 and 700.
 - Pill and circle geometry for interactive elements; 12/16/24px corners for fields, media, cards.
 - A constantly drifting thin-line grid as the ground plane.
@@ -145,7 +145,7 @@ A monochrome night palette: one black ground, one warm white, white-by-opacity f
 - **Bone White** (bone-white): all primary type, the solid button, the highlight block behind emphasized headline lines, the arrow circles in pills, focus outlines, and text selection. It is the system's accent as much as its ink.
 
 ### Tertiary
-- **Available Green** (available-green): exclusively the 8px status dot (and its pulsing ring) in the "Disponible" chip under the hero name. Nowhere else.
+- **Accent Green** (available-green, `--c-accent`): the one accent. Only in the hero: the 2px line before the eyebrow and the CTA border (60% mixed, full on hover), plus the glow under the current nav link. Nowhere else.
 
 ### Brand Light (per project, data-driven)
 Not a token. Each project declares `logo.color` (and optionally `logo.color2`) in `src/proyectos.js`; `src/projects/light.js` turns it into three "r g b" variables scoped to that project's box:
@@ -163,7 +163,7 @@ Not a token. Each project declares `logo.color` (and optionally `logo.color2`) i
 - **Grid Line** (grid-line): the drifting background grid only.
 
 ### Named Rules
-**The One Living Color Rule.** Green (#3ddc84) appears only as the availability dot. Errors, success, links, and hovers stay monochrome; form errors are marked with a brighter white border and white text.
+**The One Accent Rule.** Green (#3ddc84) is the only own color and lives only in the hero and the current nav link (see Accent Green). Errors, success, links, and hovers stay monochrome; form errors are marked with a brighter white border and white text.
 
 **The Contained Brand Rule.** A project's brand color may appear only inside its own logo box (light, haze, orbit, fire, sparks) and on that box's one-pixel border when lit. It never leaks into type, buttons, the grid, or section backgrounds. The logo PNG itself is never recolored or filtered beyond the light around it.
 
@@ -186,7 +186,7 @@ Not a token. Each project declares `logo.color` (and optionally `logo.color2`) i
 - **Label** (400 or 700, 0.875rem, 0.01em): chip text, form labels, captions; detail "Problema / Solución" labels use 700.
 
 ### Named Rules
-**The Two Weights Rule.** Only 400 and 700 exist; no font files for other weights are shipped. Headings are 700, leads and body are 400.
+**The Two Weights Rule.** Only 400 and 700 exist for the site's own type (Schibsted Grotesk, Inter). Headings are 700, leads and body are 400. One sanctioned exception: the hero name is set in Satoshi Black (900, -0.04em, line-height 0.92), loaded from Fontshare's CDN because its license forbids hosting the files in a public repository.
 
 **The Big-Small Split Rule.** Schibsted for anything read as a headline, lead, or signature (including the email address and mobile menu links); Inter for anything read as UI or data.
 
@@ -211,7 +211,7 @@ No drop shadows. Depth is conveyed by translucency and light: the nav pill and b
 
 ## Shapes
 
-Interactive controls are pills (999px) or perfect circles: nav, CTA, solid button, status chip, arrow circles, social icons, menu toggle, monogram, photo frame. Containers use three steps: fields 12px, project and gallery media 16px, contact cards and the mobile menu 24px. Borders are always one pixel. The photo frame is a hairline ring separated from the grayscale image by 6px. The mobile menu toggle uses two 1.5px bars that cross into an X.
+Interactive controls are pills (999px) or perfect circles: nav, CTA, solid button, arrow circles, social icons, menu toggle, monogram, photo frame. Containers use three steps: fields 12px, project and gallery media 16px, contact cards and the mobile menu 24px. Borders are always one pixel. The photo frame is a hairline ring separated from the grayscale image by 6px. The mobile menu toggle uses two 1.5px bars that cross into an X.
 
 ## Components
 
@@ -224,7 +224,6 @@ Tactile and quiet; the arrow circle is the shared signature.
 - **Back (detail):** the pill mirrored, circle leading, dark glass fill; the arrow nudges 2px left on hover.
 
 ### Chips
-- **Status:** dark translucent pill with hairline border, bone-white label text, 8px green dot with a slow expanding pulse ring (2.4s). Pulse removed under reduced motion.
 
 ### Cards / Containers
 - **Corner Style:** 24px contact cards; 16px project media.
@@ -235,14 +234,13 @@ Tactile and quiet; the arrow circle is the shared signature.
 
 ### Project Logo Box (signature)
 A 4:3 box (box black, 16px corners) that presents a client's transparent PNG logo intact and adapts only the light around it (Ref 1 and Ref 2 of the projects update). Layers, back to front:
-- **Haze:** three radial gradients sized from the logo's real footprint (`--logo-w`, `--logo-h`), tinting the black faintly; breathes by scale 0.94-1.07.
+- **Haze:** three radial gradients sized from the logo's real footprint (`--logo-w`, `--logo-h`), tinting the black faintly. Static.
 - **Effect (optional, per project):** `orbita`, a thin tilted ellipse (-21deg, ~2.3x the logo width) that passes behind the logo, with a light streak along its axis; or `fuego`, a canvas of domain-warped ridged-noise smoke in a horizontal band plus ~60 sparks and streaks, seeded from the logo path so card and detail match. No effect line means glow only.
-- **Halo:** the logo silhouette (CSS mask of the PNG) filled with --glow and blurred 3cqi; breathes 12-80% opacity over 3.2s each way, desynchronized per box.
 - **Logo:** the PNG at max 56% x 44% of the box, with a three-step drop-shadow light (rim, near, far).
 - **Grain:** a 1.8% noise layer so faint gradients never band.
 Light measures use `cqi` so card (~573px), detail (~960px), and mobile (~340px) look identical. Everything fades in only once the logo is measured; the light never shows alone.
 
-**Interaction A (hover or keyboard focus-visible, not touch):** the halo blooms, the logo lifts to 1.035 and its light intensifies, the border takes the brand glow; `orbita` adds a comet (bright head + fainter tail) circling the orbit every 3.4s and vanishing behind the logo; `fuego` swells the smoke to 1.05 and emits live sparks (26/s, rising with heat) that finish their path when the pointer leaves. In the detail view the header box stays in this state permanently, and its sparks pause while scrolled out of view.
+**Interaction A (hover or keyboard focus-visible, not touch):** the haze blooms, the logo lifts to 1.035 and its light intensifies, the border takes the brand glow. CSS transitions only, no loops. In the detail view the header box stays in this state permanently. The optional effects (`orbita`: a static tilted ellipse with a light streak; `fuego`: smoke and sparks drawn once on a canvas) are still images: **project boxes have no continuous animation** (a deliberate performance decision: blurred animated layers x4 boxes are the costliest thing to paint on low-end GPUs).
 
 ### Inputs / Fields
 - **Style:** borderless 6% white fill, 12px radius, 1rem padding, 16px text; label in Inter small above.
@@ -262,13 +260,13 @@ A canvas cloud of small bone-white crosses at varying opacity that jostle with a
 An emphasized headline line set in black on a bone-white block that bleeds 0.18em left so the text stays aligned with the lines above. On reveal the block wipes in from the left (900ms) in step with the words.
 
 ### Motion
-One curve, ease-out-expo `cubic-bezier(0.19, 1, 0.22, 1)`, for everything except the glow breathing (ease-in-out, alternate) and the comet (linear); durations 500ms (state changes), 750ms (rolling labels, larger moves, glow intensify), 1200-1300ms (word reveals, light fade-in). Opening a project flies the real, already-lit detail header from the card (FLIP, 950ms) with its breathing and comet phases carried over, so the box never goes still. The page has a single orchestrated entrance (name words rise from masks, meta fades up, nav drops and stretches). On scroll, headings reveal word by word from masks (110ms per line, 25ms per word) and other items fade up 18px. The background grid drifts diagonally one cell every 9s on a shared clock. Lenis provides smooth scroll. Reduced motion: grid static, no entrances or reveals, cube slower without layer turns, crosses frozen, Lenis off, logo boxes still (halo fixed at mid intensity, no comet, no live sparks, no lift; hover only brightens the light).
+One curve, ease-out-expo `cubic-bezier(0.19, 1, 0.22, 1)`, for everything; durations 500ms (state changes), 750ms (rolling labels, larger moves, glow intensify), 1200-1300ms (word reveals, light fade-in). Opening a project flies the real, already-lit detail header from the card (FLIP, 950ms). The page has a single orchestrated entrance (name words rise from masks, meta fades up, nav drops and stretches). On scroll, headings reveal word by word from masks (110ms per line, 25ms per word) and other items fade up 18px. The background grid drifts diagonally one cell every 9s on a shared clock. Lenis provides smooth scroll. Reduced motion: grid static, no entrances or reveals, cube slower without layer turns, crosses frozen, Lenis off, logo boxes: no lift on hover (the light still brightens).
 
 ## Do's and Don'ts
 
 ### Do:
 - **Do** build every gray as white at an alpha over #050505; use the hairline (10% white) for all borders and dividers.
-- **Do** keep green limited to the availability dot, and brand color contained inside each project's logo box.
+- **Do** keep green limited to the hero accents and the current nav link, and brand color contained inside each project's logo box.
 - **Do** set headlines in Schibsted Grotesk 700 with negative tracking (-0.03em to -0.04em) and UI text in Inter 400.
 - **Do** use pills and circles for controls, and 12/16/24px for fields, media, and cards.
 - **Do** animate with `cubic-bezier(0.19, 1, 0.22, 1)` and provide a reduced-motion path for every moving element.

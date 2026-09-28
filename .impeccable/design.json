@@ -229,29 +229,9 @@
         "purpose": "Diagonal drift of the background grid; static under reduced motion."
       },
       {
-        "name": "status-pulse",
-        "value": "2.4s ease-out infinite, scale 1 to 3, opacity 0.55 to 0",
-        "purpose": "Availability dot ring; removed under reduced motion."
-      },
-      {
-        "name": "glow-breathe",
-        "value": "3.2s ease-in-out infinite alternate, halo opacity 0.12 to 0.8 + scale 1 to 1.09; haze scale 0.94 to 1.07; per-box negative delay",
-        "purpose": "Constant, subtle breathing of every project logo box; fixed at mid intensity under reduced motion."
-      },
-      {
-        "name": "orbit-comet",
-        "value": "3.4s linear infinite, dashed ellipse head (4/96) + tail (22/78) sharing one offset",
-        "purpose": "Interaction A on 'orbita' boxes; hidden under reduced motion."
-      },
-      {
-        "name": "live-sparks",
-        "value": "canvas, 26 sparks/s, max 40, life 1.1-2.4s, buoyancy upward, loop ends when all die",
-        "purpose": "Interaction A on 'fuego' boxes; off under reduced motion and while scrolled out of view."
-      },
-      {
         "name": "box-flight",
-        "value": "FLIP of the real detail header, 950ms ease-out, lit from the click, breathing/comet phases copied from the card",
-        "purpose": "Card to detail transition; the box never goes still."
+        "value": "FLIP of the real detail header, 950ms ease-out, lit from the click",
+        "purpose": "Card to detail transition."
       }
     ],
     "breakpoints": [
@@ -299,14 +279,6 @@
       "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: 4.5rem; padding: 0 0.5rem 0 1rem; border: 1px solid rgb(255 255 255 / 0.075); border-radius: 999px; background-color: rgb(20 20 20 / 0.55); box-shadow: inset 0 0 4.5rem rgb(255 255 255 / 0.05); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); font-family: 'Inter', system-ui, sans-serif; } .ds-nav__logo { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border: 1px solid rgb(255 255 255 / 0.1); border-radius: 50%; color: #f5f5f4; font-family: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 0.8125rem; font-weight: 700; letter-spacing: -0.02em; text-decoration: none; transition: border-color 500ms cubic-bezier(0.19, 1, 0.22, 1); } .ds-nav__logo:hover { border-color: rgb(255 255 255 / 0.4); } .ds-nav__links { display: flex; gap: 2rem; margin: 0; padding: 0; list-style: none; } .ds-nav__link { padding-block: 0.5rem; color: rgb(245 245 244 / 0.66); font-size: 0.9375rem; line-height: 1.4; text-decoration: none; transition: color 500ms cubic-bezier(0.19, 1, 0.22, 1); } .ds-nav__link span { position: relative; } .ds-nav__link span::after { content: ''; position: absolute; left: 0; right: 0; bottom: -0.2em; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right bottom; transition: transform 500ms ease-out; } .ds-nav__link:hover, .ds-nav__link:focus-visible, .ds-nav__link[aria-current] { color: #f5f5f4; } .ds-nav__link:hover span::after, .ds-nav__link:focus-visible span::after, .ds-nav__link[aria-current] span::after { transform: scaleX(1); transform-origin: left bottom; } .ds-nav__cta { padding: 0.5rem 1rem; border: 1px solid rgb(255 255 255 / 0.1); border-radius: 999px; color: #f5f5f4; font-size: 0.9375rem; text-decoration: none; }"
     },
     {
-      "name": "Availability Chip",
-      "kind": "chip",
-      "refersTo": "status-chip",
-      "description": "The only colored element: pulsing green dot plus 'Disponible' label.",
-      "html": "<span class=\"ds-status\"><span class=\"ds-status__dot\"></span>Disponible para trabajar</span>",
-      "css": ".ds-status { display: inline-flex; align-items: center; gap: 0.625rem; padding: 0.375rem 0.875rem 0.375rem 0.75rem; border: 1px solid rgb(255 255 255 / 0.1); border-radius: 999px; background-color: rgb(5 5 5 / 0.7); color: #f5f5f4; font-family: 'Inter', system-ui, sans-serif; font-size: 0.875rem; line-height: 1.4; white-space: nowrap; } .ds-status__dot { position: relative; flex: none; width: 8px; height: 8px; border-radius: 50%; background: #3ddc84; } .ds-status__dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #3ddc84; animation: ds-pulse 2.4s cubic-bezier(0.19, 1, 0.22, 1) infinite; } @keyframes ds-pulse { from { opacity: 0.55; transform: scale(1); } to { opacity: 0; transform: scale(3); } } @media (prefers-reduced-motion: reduce) { .ds-status__dot::after { animation: none; opacity: 0; } }"
-    },
-    {
       "name": "Text Field",
       "kind": "input",
       "refersTo": "input-field",
@@ -327,8 +299,8 @@
       "kind": "card",
       "refersTo": "project-media",
       "description": "4:3 logo box: transparent PNG logo lit by its own brand color on box black; hover (Interaction A) intensifies the light, tints the hairline with the brand glow, and raises the arrow cue.",
-      "html": "<a class=\"ds-project\" href=\"#\" style=\"--glow: 139 92 246; --rim: 191 165 250\"><span class=\"ds-project__media\"><span class=\"ds-project__halo\"></span><span class=\"ds-project__logo\" role=\"img\" aria-label=\"Logo\"></span></span><span class=\"ds-project__title\">Proyecto</span></a>",
-      "css": ".ds-project { display: block; color: #f5f5f4; text-decoration: none; } .ds-project__media { position: relative; display: grid; place-items: center; overflow: hidden; aspect-ratio: 4 / 3; border-radius: 16px; background: radial-gradient(ellipse 30% 45% at 50% 50%, rgb(var(--glow) / 0.2), transparent), #080808; container-type: size; } .ds-project__media::after { content: ''; position: absolute; inset: 0; border: 1px solid rgb(255 255 255 / 0.1); border-radius: inherit; transition: border-color 500ms cubic-bezier(0.19, 1, 0.22, 1); } .ds-project:hover .ds-project__media::after, .ds-project:focus-visible .ds-project__media::after { border-color: rgb(var(--glow) / 0.42); } .ds-project__logo { width: 30%; height: 44%; border-radius: 18%; background: rgb(var(--glow)); filter: drop-shadow(0 0 0.2cqi rgb(var(--rim) / 0.85)) drop-shadow(0 0 1.4cqi rgb(var(--glow) / 0.5)) drop-shadow(0 0 5cqi rgb(var(--glow) / 0.28)); transition: scale 1200ms cubic-bezier(0.19, 1, 0.22, 1); } .ds-project:hover .ds-project__logo { scale: 1.035; } .ds-project__halo { position: absolute; width: 30%; height: 44%; border-radius: 18%; background: rgb(var(--glow)); filter: blur(3cqi); animation: ds-breathe 3.2s ease-in-out infinite alternate; } @keyframes ds-breathe { from { opacity: 0.12; } to { opacity: 0.8; scale: 1.09; } } @media (prefers-reduced-motion: reduce) { .ds-project__halo { animation: none; opacity: 0.55; } } .ds-project:focus-visible { outline: 2px solid #f5f5f4; outline-offset: 6px; border-radius: 16px; } .ds-project__title { display: block; margin-top: 1.5rem; font-family: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 2rem; font-weight: 700; line-height: 1.1; letter-spacing: -0.015em; }"
+      "html": "<a class=\"ds-project\" href=\"#\" style=\"--glow: 139 92 246; --rim: 191 165 250\"><span class=\"ds-project__media\"><span class=\"ds-project__logo\" role=\"img\" aria-label=\"Logo\"></span></span><span class=\"ds-project__title\">Proyecto</span></a>",
+      "css": ".ds-project { display: block; color: #f5f5f4; text-decoration: none; } .ds-project__media { position: relative; display: grid; place-items: center; overflow: hidden; aspect-ratio: 4 / 3; border-radius: 16px; background: radial-gradient(ellipse 30% 45% at 50% 50%, rgb(var(--glow) / 0.2), transparent), #080808; container-type: size; } .ds-project__media::after { content: ''; position: absolute; inset: 0; border: 1px solid rgb(255 255 255 / 0.1); border-radius: inherit; transition: border-color 500ms cubic-bezier(0.19, 1, 0.22, 1); } .ds-project:hover .ds-project__media::after, .ds-project:focus-visible .ds-project__media::after { border-color: rgb(var(--glow) / 0.42); } .ds-project__logo { width: 30%; height: 44%; border-radius: 18%; background: rgb(var(--glow)); filter: drop-shadow(0 0 0.2cqi rgb(var(--rim) / 0.85)) drop-shadow(0 0 1.4cqi rgb(var(--glow) / 0.5)) drop-shadow(0 0 5cqi rgb(var(--glow) / 0.28)); transition: scale 1200ms cubic-bezier(0.19, 1, 0.22, 1); } .ds-project:hover .ds-project__logo { scale: 1.035; } .ds-project:focus-visible { outline: 2px solid #f5f5f4; outline-offset: 6px; border-radius: 16px; } .ds-project__title { display: block; margin-top: 1.5rem; font-family: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 2rem; font-weight: 700; line-height: 1.1; letter-spacing: -0.015em; }"
     },
     {
       "name": "Headline Highlight",
@@ -341,10 +313,10 @@
   ],
   "narrative": {
     "northStar": "The Night Workshop",
-    "overview": "A single dark room where the work is done in the open. The page is near-black, crossed by a fine white grid that never stops drifting, and everything on it is white type or white at lower opacity. The only object with volume is a glossy black Rubik cube that turns and solves itself; the only living color in the room's own voice is a small green dot that says the craftsman is available. The one sanctioned exception is the client work: each project sits in a black box lit from behind by its own brand color, so the client's identity stays intact while the room around it stays monochrome. Skill is demonstrated by the page's own finish (masked type reveals, a nav pill that drops and stretches, a lit logo box that flies from card to detail without ever going still), not claimed in copy.\n\nDensity is low and deliberate: one idea per viewport, huge grotesque headlines, generous section padding, thin hairlines instead of boxes. Surfaces are glass or near-black panels separated by one-pixel white lines at 10% opacity; depth comes from blur, inner glow, and the lit halo behind the cube, never from drop shadows. Motion is slow and liquid, all on one exponential ease-out curve, and fully yields to reduced motion.\n\nThe confirmed rejection is the generic corporate portfolio: identical card grids, agency phrasing, brand gradients, blues, particle backgrounds.",
+    "overview": "A single dark room where the work is done in the open. The page is near-black, crossed by a fine white grid that never stops drifting, and everything on it is white type or white at lower opacity. The only object with volume is a glossy black Rubik cube that turns and solves itself; the room's own only color is a green accent used sparingly in the hero (a short line, the button's border) and as a glow under the current nav link. The one sanctioned exception is the client work: each project sits in a black box lit from behind by its own brand color, so the client's identity stays intact while the room around it stays monochrome. Skill is demonstrated by the page's own finish (masked type reveals, a nav pill that drops and stretches, a lit logo box that flies from card to detail), not claimed in copy.\n\nDensity is low and deliberate: one idea per viewport, huge grotesque headlines, generous section padding, thin hairlines instead of boxes. Surfaces are glass or near-black panels separated by one-pixel white lines at 10% opacity; depth comes from blur, inner glow, and the lit halo behind the cube, never from drop shadows. Motion is slow and liquid, all on one exponential ease-out curve, and fully yields to reduced motion.\n\nThe confirmed rejection is the generic corporate portfolio: identical card grids, agency phrasing, brand gradients, blues, particle backgrounds.",
     "keyCharacteristics": [
       "Total monochrome on #050505; grays are white at reduced opacity, not separate hues.",
-      "One green status dot is the site's own only color; project brand light lives strictly inside the project boxes.",
+      "One green accent, only in the hero and the current nav link; project brand light lives strictly inside the project boxes.",
       "Schibsted Grotesk for everything large, Inter for everything small; only weights 400 and 700.",
       "Pill and circle geometry for interactive elements; 12/16/24px corners for fields, media, cards.",
       "A constantly drifting thin-line grid as the ground plane.",
@@ -352,8 +324,8 @@
     ],
     "rules": [
       {
-        "name": "The One Living Color Rule",
-        "body": "Green (#3ddc84) appears only as the availability dot. Errors, success, links, and hovers stay monochrome; form errors are marked with a brighter white border and white text.",
+        "name": "The One Accent Rule",
+        "body": "Green (#3ddc84) is the only own color and lives only in the hero (eyebrow line, CTA border) and the current nav link glow. Errors, success, links, and hovers stay monochrome; form errors are marked with a brighter white border and white text.",
         "section": "colors"
       },
       {
@@ -368,7 +340,7 @@
       },
       {
         "name": "The Two Weights Rule",
-        "body": "Only 400 and 700 exist; no font files for other weights are shipped. Headings are 700, leads and body are 400.",
+        "body": "Only 400 and 700 exist for the site's own type (Schibsted Grotesk, Inter). Headings are 700, leads and body are 400. One sanctioned exception: the hero name is set in Satoshi Black (900, -0.04em, line-height 0.92), loaded from Fontshare's CDN because its license forbids hosting the files in a public repository.",
         "section": "typography"
       },
       {

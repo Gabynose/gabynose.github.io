@@ -13,90 +13,112 @@
   gap: clamp(2rem, 5vw, 6rem);
 }
 
+/* Satoshi Black 900 (ver fonts.css). Único texto del sitio que sale del par Schibsted/Inter y de los pesos 400/700. */
 .hero__name {
+  font-family: var(--font-name);
   font-size: var(--fs-display);
-  font-weight: var(--fw-bold);
-  line-height: var(--lh-display);
-  letter-spacing: var(--ls-display);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
 }
 
-/* Cada palabra en su línea, con máscara para la entrada. Margen extra para descendentes (g). */
+/* Cada palabra en su línea, con máscara para la entrada. Margen extra para las colas de la g (sobresalen 0.27em bajo la línea base). */
 .hero__line {
   display: block;
   overflow: hidden;
-  padding-bottom: 0.1em;
-  margin-bottom: -0.1em;
+  padding-bottom: 0.3em;
+  margin-bottom: -0.3em;
 }
 
 .hero__word {
   display: block;
 }
 
-.hero__meta {
+/* Línea superior: raya verde + rol en mayúsculas espaciadas. */
+.hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: clamp(1rem, 0.6rem + 1.4vw, 1.75rem);
+  font-family: var(--font-ui);
+  font-size: var(--fs-label);
+  line-height: 1.4;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--c-fg-2);
+}
+
+.hero__eyebrow-line {
+  flex: none;
+  width: 1.75rem;
+  height: 2px;
+  background-color: var(--c-accent);
+}
+
+/* Bajada bajo el nombre. */
+.hero__lead {
+  max-width: 34ch;
+  margin-top: clamp(1.75rem, 1.2rem + 2.2vw, 3.25rem);
+  font-size: clamp(1.0625rem, 0.95rem + 0.55vw, 1.375rem);
+  line-height: 1.45;
+  color: var(--c-fg-2);
+  text-wrap: balance;
+}
+
+.hero__actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--s-4) var(--s-5);
-  margin-top: clamp(1.5rem, 1rem + 2vw, 3rem);
+  margin-top: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
 }
 
-.hero__role {
-  font-family: var(--font-display);
-  font-size: clamp(1.25rem, 1rem + 1.1vw, 2rem);
-  font-weight: var(--fw-regular);
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  color: var(--c-fg-2);
-}
-
-/* Estado "Disponible": el único color vivo del sitio. */
-.status {
+/* Botón principal: píldora con borde verde. Al pasar, el borde se enciende del todo. */
+.btn-hero {
   display: inline-flex;
   align-items: center;
-  gap: 0.625rem;
-  padding: 0.375rem 0.875rem 0.375rem 0.75rem;
-  border: 1px solid var(--c-line);
+  gap: 0.875rem;
+  min-height: 3rem;
+  padding: 0 1.75rem 0 2.25rem;
+  border: 1px solid color-mix(in srgb, var(--c-accent) 60%, transparent);
   border-radius: var(--r-pill);
-  background-color: rgb(5 5 5 / 0.7);
-  font-size: var(--fs-small);
+  background-color: rgb(5 5 5 / 0.4);
+  font-size: var(--fs-nav);
   line-height: 1.4;
   color: var(--c-fg);
+  text-decoration: none;
   white-space: nowrap;
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-3) var(--ease-out);
 }
 
-.status__dot {
-  position: relative;
+.btn-hero:hover,
+.btn-hero:focus-visible {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 1.5rem color-mix(in srgb, var(--c-accent) 16%, transparent);
+}
+
+.btn-hero:focus-visible {
+  outline: 2px solid var(--c-fg);
+  outline-offset: 4px;
+}
+
+.btn-hero__icon {
   flex: none;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--c-available);
+  width: 1rem;
+  height: 1rem;
+  transition: translate var(--dur-2) var(--ease-out);
 }
 
-.status__dot::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background-color: var(--c-available);
-  animation: status-pulse 2.4s var(--ease-out) infinite;
+.btn-hero:hover .btn-hero__icon,
+.btn-hero:focus-visible .btn-hero__icon {
+  translate: 4px 0;
 }
 
-@keyframes status-pulse {
-  from {
-    opacity: 0.55;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(3);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .status__dot::after {
-    animation: none;
-    opacity: 0;
+@media (max-width: 479px) {
+  .hero__eyebrow {
+    letter-spacing: 0.2em;
   }
 }
 
@@ -152,4 +174,44 @@
     justify-self: center;
     max-width: 22rem;
   }
+}
+
+/* Detalles del apellido (ver hero.js): rendijas del color del fondo en la "g" y la "a", como en la referencia.
+   Medidas en em sobre Satoshi 900, tomadas de la referencia ampliada: la línea base está a 1.01em del borde
+   superior de la caja de la letra, la altura de x es 0.5em y el sangrado izquierdo de g y a es 0.031em.
+   Si cambia la fuente del nombre, hay que volver a medir. */
+.hero__cut {
+  position: relative;
+}
+
+.hero__cut::after {
+  content: '';
+  position: absolute;
+  background-color: var(--c-bg);
+  pointer-events: none;
+}
+
+/* g: cuña que nace en el borde derecho de la tija (~0.09em de alto ahí, 0.16em de largo) y se afina hacia la
+   izquierda: borde de arriba en diagonal, borde de abajo casi horizontal, bordes difuminados como en la referencia.
+   Es un SVG (viewBox de 0.01em por unidad; el color es --c-bg, #050505). La forma se prolonga 0.04em más allá del
+   borde derecho de la tija (en 0.58em): sin eso el desenfoque deja una tira blanca en el borde de la letra. */
+.hero__cut--g::after {
+  left: 0.39em;
+  top: 0.77em;
+  width: 0.26em;
+  height: 0.2em;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-3 -6 26 20'%3E%3Cdefs%3E%3Cfilter id='b' x='-30%25' y='-30%25' width='160%25' height='160%25'%3E%3CfeGaussianBlur stdDeviation='0.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpolygon points='0,10.5 20,-2.6 20,8.6' fill='%23050505' filter='url(%23b)'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+}
+
+/* a: línea vertical de ~0.036em, negra del todo en el centro (~0.025em, unos 3.5px a 144px) y con bordes suaves,
+   desde el ojo hasta la línea base. */
+.hero__cut--a::after {
+  left: 0.254em;
+  top: 0.88em; /* entra un poco en el ojo, que ya es oscuro */
+  bottom: 0.2em; /* pasa 0.04em la línea base: la panza de la a sobresale y, si no, queda blanco bajo la línea */
+  width: 0.036em;
+  background-color: transparent;
+  background-image: linear-gradient(90deg, transparent, var(--c-bg) 30%, var(--c-bg) 70%, transparent);
 }

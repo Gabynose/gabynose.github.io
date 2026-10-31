@@ -24,6 +24,25 @@
   isolation: isolate;
 }
 
+/* Vista previa de tipo imagen: la imagen llena toda la caja (4:3). Sin grano ni luz de marca. */
+.logo-box--imagen::after {
+  display: none;
+}
+
+.logo-box--imagen > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale var(--dur-3) var(--ease-out);
+}
+
+/* Interacción A en la vista imagen: acercamiento sutil (el borde teñido lo pone la tarjeta). */
+.logo-box--imagen.is-active > img {
+  scale: 1.04;
+}
+
 /* Neblina de marca: se dispersa detrás del logo y tiñe apenas el negro (Ref 1 y 2). */
 .logo-box__light {
   position: absolute;
@@ -503,6 +522,20 @@
 
 .detail__gallery figure {
   margin: 0;
+}
+
+/* Proyectos de celular: 3 capturas verticales (9:19,5) una al lado de la otra, centradas aunque sean menos de 3. */
+.detail__gallery--celular {
+  --phone-gap: clamp(0.5rem, 0.1rem + 1.6vw, 1.5rem);
+  display: flex;
+  justify-content: center;
+  gap: var(--phone-gap);
+}
+
+.detail__gallery--celular figure {
+  flex: 0 1 calc((100% - 2 * var(--phone-gap)) / 3);
+  aspect-ratio: 9 / 19.5;
+  border-radius: clamp(var(--r-sm), 3cqi, var(--r-lg));
 }
 
 /* Gifs y webp animados: capa propia, así cada cuadro nuevo no obliga a repintar el texto y la cuadrícula de alrededor. */

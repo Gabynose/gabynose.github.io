@@ -167,9 +167,30 @@ export function setBoxActive(box, active) {
   box.classList.toggle('is-active', active);
 }
 
+// Vista previa de tipo imagen: la caja se llena con una imagen 4:3 (recortada al centro si la proporción es otra).
+function imageBox(project, eager) {
+  const img = el('img', {
+    src: project.logo.src,
+    alt: project.logo.alt,
+    loading: eager ? 'eager' : 'lazy',
+    decoding: 'async',
+  });
+  const box = el('div', { class: 'logo-box logo-box--imagen is-lit' }, img);
+  for (const [name, value] of Object.entries(project.luz)) box.style.setProperty(name, value);
+  // Red de seguridad: sin imagen, la caja muestra el nombre del proyecto con su luz (nunca una imagen rota).
+  img.addEventListener('error', () => {
+    warnLogo(project, `no se encontró la imagen "${img.getAttribute('src')}". Se muestra el nombre del proyecto.`);
+    box.classList.add('is-missing');
+    box.prepend(el('span', { class: 'logo-box__light', 'aria-hidden': 'true' }));
+    img.replaceWith(el('span', { class: 'logo-box__name', text: project.titulo }));
+  });
+  return box;
+}
+
 // `like`: otra caja del mismo proyecto ya medida (la tarjeta). Si se pasa, esta nace
 // encendida con sus medidas, sin esperar a que cargue la imagen ni fundirse desde negro.
 export function logoBox(project, { eager = false, like = null } = {}) {
+  if (project.vista === 'imagen') return imageBox(project, eager);
   const fire = project.efecto === 'fuego' ? el('canvas', { class: 'logo-box__fire', 'aria-hidden': 'true' }) : null;
   const img = el('img', {
     src: project.logo.src,

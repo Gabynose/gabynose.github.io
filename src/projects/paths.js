@@ -14,3 +14,13 @@ export function logoUrl(value) {
 export function logoInLogosDir(url) {
   return LOGOS_DIR + url.split('/').pop();
 }
+
+// Vistas previas de tipo imagen (la caja se llena con una foto/captura 4:3 en vez de un logo).
+export const PREVIEWS_DIR = '/proyectos/previews/';
+
+// 'mi-preview.jpg' → '/proyectos/previews/mi-preview.jpg'. Una ruta completa se respeta tal cual.
+export function previewUrl(value) {
+  const name = String(value ?? '').trim();
+  if (!name) return '';
+  return name.includes('/') ? name : PREVIEWS_DIR + name;
+}

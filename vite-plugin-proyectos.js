@@ -6,6 +6,22 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
+// Ancho y alto de un JPG (lee el primer bloque SOF). null = no se pudo leer.
+function jpgSize(file) {
+  const b = readFileSync(file);
+  if (b[0] !== 0xff || b[1] !== 0xd8) return null;
+  let pos = 2;
+  while (pos + 9 < b.length) {
+    if (b[pos] !== 0xff) { pos++; continue; }
+    const marker = b[pos + 1];
+    if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) {
+      return { height: b.readUInt16BE(pos + 5), width: b.readUInt16BE(pos + 7) };
+    }
+    pos += 2 + b.readUInt16BE(pos + 2);
+  }
+  return null;
+}
+
 const PNG_SIGNATURE = '89504e470d0a1a0a';
 
 // Busca la ruta segmento a segmento comparando nombres exactos.
@@ -76,7 +92,7 @@ async function load(root, file) {
 async function check(root) {
   const publicDir = join(root, 'public');
   const { proyectos } = await load(root, 'src/proyectos.js');
-  const { logoUrl, logoInLogosDir, LOGOS_DIR } = await load(root, 'src/projects/paths.js');
+  const { logoUrl, logoInLogosDir, LOGOS_DIR, previewUrl, PREVIEWS_DIR } = await load(root, 'src/projects/paths.js');
   const logosDir = join(publicDir, ...LOGOS_DIR.split('/').filter(Boolean));
   let available = [];
   try {
@@ -88,6 +104,49 @@ async function check(root) {
   proyectos.forEach((project, index) => {
     const title = project.titulo ?? `Proyecto ${index + 1}`;
     const say = (message) => `"${title}": ${message}`;
+    const checkGallery = () => {
+      for (const image of project.galeria ?? []) {
+        if (!image?.src?.startsWith('/')) continue;
+        const g = findExact(publicDir, image.src);
+        if (g.status === 'missing') warnings.push(say(`no existe la imagen de galería "${image.src}".`));
+        if (g.status === 'case') warnings.push(say(`la imagen de galería "${image.src}" existe como "${g.real}" (revisá mayúsculas).`));
+        const animated = g.status === 'ok' && /[.](gif|webp)$/i.test(image.src) ? mediaInfo(g.file) : null;
+        if (g.status === 'ok' && statSync(g.file).size > 4 * 1024 * 1024) warnings.push(say(`"${image.src}" pesa ${(statSync(g.file).size / 1048576).toFixed(1)} MB: tarda en cargar. Si es un gif o webp animado, corré npm run optimizar.`));
+        if (animated && animated.frames > 1 && animated.width > 1280) warnings.push(say(`"${image.src}" es una animación de ${animated.width}×${animated.height}: se muestra a ~960 px y cada cuadro se escala, lo que puede hacerla titilar. Corré npm run optimizar (guarda el original en originales/).`));
+        if (g.status === 'ok' && animated && animated.frames === 1) {
+          warnings.push(say(`"${image.src}" tiene 1 solo fotograma: no se va a animar. Si esperabas movimiento, este archivo es una captura fija (pasa cuando se arrastra o se pega desde otra app). Copiá el archivo animado original a public/proyectos/. Si es una imagen fija a propósito, ignorá este aviso.`));
+        }
+      }
+    };
+
+    // Vista previa de tipo imagen: la imagen debe existir con el nombre exacto y ser 4:3.
+    if (project.imagen) {
+      const imgSrc = project.imagen.src;
+      if (!imgSrc) {
+        errors.push(say(`falta imagen.src. Poné el nombre del archivo que está en public${PREVIEWS_DIR}, ej. src: 'preview.jpg'.`));
+        return;
+      }
+      const url = previewUrl(imgSrc);
+      const found = findExact(publicDir, url);
+      if (found.status === 'missing') {
+        errors.push(say(`no existe la imagen de vista previa "${url}". Subila a public${PREVIEWS_DIR} y poné su nombre exacto en imagen.src.`));
+        return;
+      }
+      if (found.status === 'case') {
+        errors.push(say(`la imagen "${url}" existe como "${found.real}". En tu PC funciona, pero en el hosting no: escribila con las mismas mayúsculas.`));
+        return;
+      }
+      const png = pngInfo(found.file);
+      const info = png.png ? png : (jpgSize(found.file) ?? mediaInfo(found.file));
+      if (info?.width && info?.height) {
+        if (Math.abs(info.width / info.height - 4 / 3) > 0.03) warnings.push(say(`"${url}" mide ${info.width}×${info.height} (no es 4:3): se recorta al centro dentro de la caja. Ideal: 1600×1200.`));
+        if (info.width < 1000) warnings.push(say(`"${url}" mide ${info.width}×${info.height}: puede verse borrosa en el detalle. Ideal: 1600×1200.`));
+        else if (info.width > 2000) warnings.push(say(`"${url}" mide ${info.width}×${info.height}: pesa de más para una vista previa. Ideal: 1600×1200.`));
+      }
+      checkGallery();
+      return;
+    }
+
     const src = project.logo?.src;
     if (!src) {
       errors.push(say(`falta logo.src. Poné el nombre del PNG que está en public${LOGOS_DIR}, ej. src: 'marca.png'.`));
@@ -123,18 +182,7 @@ async function check(root) {
     else if (Math.max(info.width, info.height) < 600) warnings.push(say(`"${url}" mide ${info.width}×${info.height}; puede verse borroso en la vista detalle (ideal: el dibujo con 1200 px o más de lado mayor).`));
     else if (Math.max(info.width, info.height) > 1000) warnings.push(say(`"${url}" mide ${info.width}×${info.height}: se muestra a ~330 px y el navegador decodifica todos sus píxeles, lo que traba el scroll en PCs lentas. Corré npm run optimizar (guarda el original en originales/).`));
 
-    for (const image of project.galeria ?? []) {
-      if (!image?.src?.startsWith('/')) continue;
-      const g = findExact(publicDir, image.src);
-      if (g.status === 'missing') warnings.push(say(`no existe la imagen de galería "${image.src}".`));
-      if (g.status === 'case') warnings.push(say(`la imagen de galería "${image.src}" existe como "${g.real}" (revisá mayúsculas).`));
-      const animated = g.status === 'ok' && /[.](gif|webp)$/i.test(image.src) ? mediaInfo(g.file) : null;
-      if (g.status === 'ok' && statSync(g.file).size > 4 * 1024 * 1024) warnings.push(say(`"${image.src}" pesa ${(statSync(g.file).size / 1048576).toFixed(1)} MB: tarda en cargar. Si es un gif o webp animado, corré npm run optimizar.`));
-      if (animated && animated.frames > 1 && animated.width > 1280) warnings.push(say(`"${image.src}" es una animación de ${animated.width}×${animated.height}: se muestra a ~960 px y cada cuadro se escala, lo que puede hacerla titilar. Corré npm run optimizar (guarda el original en originales/).`));
-      if (g.status === 'ok' && animated && animated.frames === 1) {
-        warnings.push(say(`"${image.src}" tiene 1 solo fotograma: no se va a animar. Si esperabas movimiento, este archivo es una captura fija (pasa cuando se arrastra o se pega desde otra app). Copiá el archivo animado original a public/proyectos/. Si es una imagen fija a propósito, ignorá este aviso.`));
-      }
-    }
+    checkGallery();
   });
   return { errors, warnings };
 }

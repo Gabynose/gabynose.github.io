@@ -110,7 +110,7 @@ function renderDetail(dialog, project, labels, cardBox) {
       project.galeria.length
         ? el(
             'div',
-            { class: 'detail__gallery', 'data-detail-fade': true },
+            { class: `detail__gallery detail__gallery--${project.tipo}`, 'data-detail-fade': true },
             // Se cargan al abrir el detalle (no "lazy"): una animación a medio bajar repite solo los cuadros que llegaron y parece que titila.
             project.galeria.map((img) =>
               el('figure', { class: /[.](gif|webp)$/i.test(img.src) ? 'detail__anim' : null }, image(img, 'detail__img', true)),

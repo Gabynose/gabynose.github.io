@@ -8,6 +8,16 @@
 Se carga en `src/proyectos.js` → `logo: { src: 'nombre-del-proyecto.png', color: '#hex', color2: '#hex' (opcional) }` y opcional `efecto: 'fuego' | 'orbita'`.
 En `src` va **solo el nombre del archivo**, igual que como se llama (mayúsculas y extensión). `npm run dev` y `npm run build` avisan si algo no coincide.
 
+## Vista previa de tipo imagen (alternativa al logo)
+| Archivo | Carpeta | Medida | Formato |
+|---|---|---|---|
+| `nombre.jpg` | `public/proyectos/previews/` | **1600×1200 (4:3)**, la misma proporción de la caja | JPG, PNG o WebP (sin transparencia necesaria) |
+
+Se carga en `src/proyectos.js` → `imagen: { src: 'nombre.jpg', alt: '...' (opcional), color: '#hex' (opcional) }` en lugar de `logo`. La imagen llena toda la caja; otra proporción se recorta al centro. Se muestra a ~570 px en la tarjeta y ~960 px en el detalle.
+
+## Capturas de proyectos de celular (`tipo: 'celular'`)
+Hasta 3 por proyecto, una al lado de la otra: **1080×2340 px (9:19,5)**, PNG o JPG, en `public/proyectos/`. Se muestran a ~300 px de ancho. Otra proporción se recorta al centro.
+
 ## Proyecto 1
 | Archivo | Carpeta | Medida | Estado |
 |---|---|---|---|
